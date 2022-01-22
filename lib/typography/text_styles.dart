@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:very_good_slide_puzzle/colors/colors.dart';
-import 'package:very_good_slide_puzzle/typography/typography.dart';
+import 'package:my_slide_puzzle/colors/colors.dart';
+import 'package:my_slide_puzzle/typography/typography.dart';
 
 /// Defines text styles for the puzzle UI.
 class PuzzleTextStyle {
@@ -46,6 +46,15 @@ class PuzzleTextStyle {
       fontSize: 24,
       height: 1.15,
       fontWeight: PuzzleFontWeight.bold,
+    );
+  }
+
+  /// Headline 4 Soft text style
+  static TextStyle get headline4Soft {
+    return _baseTextStyle.copyWith(
+      fontSize: 24,
+      height: 1.15,
+      fontWeight: PuzzleFontWeight.regular,
     );
   }
 
@@ -109,6 +118,15 @@ class PuzzleTextStyle {
       fontSize: 14,
       height: 1.27,
       fontWeight: PuzzleFontWeight.regular,
+    );
+  }
+
+  /// Countdown text style
+  static TextStyle get countdownTime {
+    return _baseTextStyle.copyWith(
+      fontSize: 300,
+      height: 1,
+      fontWeight: PuzzleFontWeight.bold,
     );
   }
 

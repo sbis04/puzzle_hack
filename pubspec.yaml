@@ -1,36 +1,44 @@
-name: very_good_slide_puzzle
-description: A Very Good Project created by Very Good CLI.
+name: my_slide_puzzle
+description: A Flutter slide puzzle game
+
+publish_to: "none"
+
 version: 1.0.0+1
-publish_to: none
 
 environment:
-  sdk: ">=2.13.0 <3.0.0"
-  flutter: 2.8.0
+  sdk: ">=2.15.1 <3.0.0"
 
 dependencies:
+  flutter:
+    sdk: flutter
   bloc: ^8.0.2
   equatable: ^2.0.3
   fake_async: ^1.2.0
-  flutter:
-    sdk: flutter
   flutter_bloc: ^8.0.1
-  flutter_svg: ^0.23.0+1
   gap: ^2.0.0
   google_fonts: ^2.1.0
   intl: ^0.17.0
+  just_audio: ^0.9.18
+  universal_platform: ^1.0.0+1
+  url_launcher: ^6.0.17
 
 dev_dependencies:
-  bloc_test: ^9.0.2
   flutter_test:
     sdk: flutter
-  mocktail: ^0.2.0
-  very_good_analysis: ^2.4.0
+  flutter_lints: ^1.0.4
 
 flutter:
   generate: true
   uses-material-design: true
   assets:
+    - assets/audio/
     - assets/images/
+    - assets/images/audio_control/
+    - assets/images/dashatar/gallery/
+    - assets/images/dashatar/success/
+    - assets/images/dashatar/green/
+    - assets/images/dashatar/blue/
+    - assets/images/dashatar/yellow/
   fonts:
     - family: GoogleSans
       fonts:
