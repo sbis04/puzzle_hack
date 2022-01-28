@@ -36,13 +36,16 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.11.0
   firebase_auth: ^3.3.5
-  flutter_riverpod: ^1.0.3
   url_strategy: ^0.2.0
   cloud_firestore: ^3.1.7
+  flutter_riverpod: ^1.0.3
+  freezed_annotation: ^1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  freezed: ^1.1.1
+  build_runner: ^2.1.7
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
