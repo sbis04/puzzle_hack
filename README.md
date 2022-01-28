@@ -1,4 +1,4 @@
-# my_slide_puzzle
+# my_flutter_puzzle
 
 A new Flutter project.
 

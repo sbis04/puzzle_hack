@@ -1,6 +1,6 @@
 {
-    "name": "my_slide_puzzle",
-    "short_name": "my_slide_puzzle",
+    "name": "my_flutter_puzzle",
+    "short_name": "my_flutter_puzzle",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

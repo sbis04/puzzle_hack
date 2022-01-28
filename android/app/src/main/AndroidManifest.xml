@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.souvikbiswas.my_slide_puzzle">
+    package="com.souvikbiswas.my_flutter_puzzle">
    <application
-        android:label="my_slide_puzzle"
+        android:label="my_flutter_puzzle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
