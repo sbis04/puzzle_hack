@@ -19,16 +19,75 @@ class _BoardState extends State<Board> {
   onClick(index) {
     log('Tapped index: $index');
     // TODO: Have to improve this logic
-    if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
-        index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
-        (index - 4 >= 0 && number1[index - 4] == 0) ||
-        (index + 4 < 16 && number1[index + 4] == 0)) {
+    // if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
+    //     index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
+    //     (index - 4 >= 0 && number1[index - 4] == 0) ||
+    //     (index + 4 < 16 && number1[index + 4] == 0)) {
+    //   setState(() {
+    //     number1[number1.indexOf(0)] = number1[index];
+    //     number1[index] = 0;
+    //     _moves++;
+    int emptyTilePosIndex = number1.indexOf(0);
+    int emptyTilePosRow = emptyTilePosIndex ~/ 4;
+    int emptyTilePosCol = emptyTilePosIndex % 4;
+
+    int currentTileRow = index ~/ 4;
+    int currentTileCol = index % 4;
+
+    //current element moves up
+
+    if ((currentTileRow + 1 == emptyTilePosRow) &&
+        (currentTileCol == emptyTilePosCol)) {
       setState(() {
-        number1[number1.indexOf(0)] = number1[index];
+        number1[emptyTilePosIndex] = number1[index];
         number1[index] = 0;
         _moves++;
       });
     }
+
+    //current element moves down
+
+    if ((currentTileRow - 1 == emptyTilePosRow) &&
+        (currentTileCol == emptyTilePosCol)) {
+      setState(() {
+        number1[emptyTilePosIndex] = number1[index];
+        number1[index] = 0;
+        _moves++;
+      });
+    }
+
+    //current element moves left
+
+    if ((currentTileRow == emptyTilePosRow) &&
+        (currentTileCol + 1 == emptyTilePosCol)) {
+      setState(() {
+        number1[emptyTilePosIndex] = number1[index];
+        number1[index] = 0;
+        _moves++;
+      });
+    }
+
+    //current element moves right
+
+    if ((currentTileRow == emptyTilePosRow) &&
+        (currentTileCol - 1 == emptyTilePosCol)) {
+      setState(() {
+        number1[emptyTilePosIndex] = number1[index];
+        number1[index] = 0;
+        _moves++;
+      });
+    }
+
+    // if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
+    //     index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
+    //     (index - 4 >= 0 && number1[index - 4] == 0) ||
+    //     (index + 4 < 16 && number1[index + 4] == 0)) {
+    //   setState(() {
+    //     number1[number1.indexOf(0)] = number1[index];
+    //     number1[index] = 0;
+    //     _moves++;
+    //   });
+    // }
   }
 
   @override
@@ -79,7 +138,7 @@ class _BoardState extends State<Board> {
             ],
           ),
           Container(
-            height: MediaQuery.of(context).size.height * 0.8,
+            height: MediaQuery.of(context).size.height * 0.6,
             width: 2,
             color: Colors.black,
           ),
