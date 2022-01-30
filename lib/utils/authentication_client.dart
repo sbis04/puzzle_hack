@@ -14,11 +14,13 @@ class AuthenticationClient {
       if (user != null) {
         user.updateDisplayName(name);
         currentUser = user;
+      } else {
+        throw ('User is empty');
       }
     } catch (e) {
       throw (e.toString());
     }
 
-    return currentUser!;
+    return currentUser;
   }
 }
