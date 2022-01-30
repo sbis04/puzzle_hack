@@ -22,8 +22,7 @@ class _BoardState extends State<Board> {
     if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
         index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
         (index - 4 >= 0 && number1[index - 4] == 0) ||
-        (index + 4 < 16 && number1[index + 4] == 0) ||
-        index == 1) {
+        (index + 4 < 16 && number1[index + 4] == 0)) {
       setState(() {
         number1[number1.indexOf(0)] = number1[index];
         number1[index] = 0;
@@ -41,6 +40,7 @@ class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
