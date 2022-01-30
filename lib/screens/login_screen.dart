@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_puzzle/res/palette.dart';
+import 'package:my_flutter_puzzle/widgets/login_widgets/name_field.dart';
+import 'package:my_flutter_puzzle/widgets/login_widgets/start_game_widget.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -10,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController _nameTextController;
   late final FocusNode _nameFocusNode;
+
+  String _nameString = '';
 
   @override
   void initState() {
@@ -31,55 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextField(
-                  controller: _nameTextController,
+                NameField(
                   focusNode: _nameFocusNode,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Color(0xffD33F49),
+                  onChange: (value) => setState(
+                    () => _nameString = value,
                   ),
-                  decoration: InputDecoration(
-                    border: const UnderlineInputBorder(),
-                    focusedBorder: const UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xFF5E239D),
-                        width: 3,
-                      ),
-                    ),
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: const Color(0xFF5E239D).withOpacity(0.5),
-                        width: 2,
-                      ),
-                    ),
-                    hintText: 'Enter your name',
-                    hintStyle: TextStyle(
-                      fontSize: 22,
-                      color: const Color(0xFF5E239D).withOpacity(0.2),
-                    ),
-                  ),
-                  onChanged: (value) => setState(() {}),
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: const Color(0xFF5E239D),
-                      onSurface: const Color(0xFF5E239D),
-                    ),
-                    onPressed: _nameTextController.text.isEmpty ||
-                            _nameTextController.text.length < 3
-                        ? null
-                        : () {},
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Text(
-                        'Start game',
-                        style: TextStyle(fontSize: 22),
-                      ),
-                    ),
-                  ),
+                StartGameWidget(
+                  nameString: _nameString,
                 ),
               ],
             ),
