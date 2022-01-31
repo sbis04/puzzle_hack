@@ -17,16 +17,9 @@ class _BoardState extends State<Board> {
   int _moves = 0;
 
   onClick(index) {
+    log('-----------------------');
     log('Tapped index: $index');
-    // TODO: Have to improve this logic
-    // if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
-    //     index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
-    //     (index - 4 >= 0 && number1[index - 4] == 0) ||
-    //     (index + 4 < 16 && number1[index + 4] == 0)) {
-    //   setState(() {
-    //     number1[number1.indexOf(0)] = number1[index];
-    //     number1[index] = 0;
-    //     _moves++;
+
     int emptyTilePosIndex = number1.indexOf(0);
     int emptyTilePosRow = emptyTilePosIndex ~/ 4;
     int emptyTilePosCol = emptyTilePosIndex % 4;
@@ -176,16 +169,8 @@ class _BoardState extends State<Board> {
       }
     }
 
-    // if (index - 1 > 0 && number1[index - 1] == 0 && index % 4 != 0 ||
-    //     index + 1 < 16 && number1[index + 1] == 0 && (index + 1) % 4 != 0 ||
-    //     (index - 4 >= 0 && number1[index - 4] == 0) ||
-    //     (index + 4 < 16 && number1[index + 4] == 0)) {
-    //   setState(() {
-    //     number1[number1.indexOf(0)] = number1[index];
-    //     number1[index] = 0;
-    //     _moves++;
-    //   });
-    // }
+    log('List: $number1');
+    log('-----------------------');
   }
 
   @override
