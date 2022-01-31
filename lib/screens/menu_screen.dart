@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_puzzle/application/states/player_matching_state.dart';
 import 'package:my_flutter_puzzle/models/user_info.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/utils/database_client.dart';
+import 'package:my_flutter_puzzle/widgets/board.dart';
 import 'package:my_flutter_puzzle/widgets/menu_widgets/multiplayer_button.dart';
 import 'package:my_flutter_puzzle/widgets/menu_widgets/solo_button.dart';
 
@@ -19,6 +21,16 @@ class MenuScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var screenSize = MediaQuery.of(context).size;
+
+    ref.listen(playerMatchingNotifierProvider, (previous, next) {
+      if (next is PlayerMatched) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => Board(),
+          ),
+        );
+      }
+    });
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -110,9 +122,9 @@ class PlayerQueuedWidget extends ConsumerWidget {
     return StreamBuilder<DocumentSnapshot>(
         stream: _databaseClient.isMatched(myInfo: myInfo),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             final queuedUserData =
-                snapshot.data!.data() as Map<String, dynamic>;
+                snapshot.data?.data() as Map<String, dynamic>;
             bool isMatched = queuedUserData['ismatched'];
 
             if (isMatched) {
