@@ -6,11 +6,10 @@ import 'package:my_flutter_puzzle/models/user_info.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/utils/database_client.dart';
-import 'package:my_flutter_puzzle/widgets/board.dart';
-import 'package:my_flutter_puzzle/widgets/menu_widgets/multiplayer_button.dart';
-import 'package:my_flutter_puzzle/widgets/menu_widgets/solo_button.dart';
+import 'package:my_flutter_puzzle/screens/puzzle_screen.dart';
+import 'package:my_flutter_puzzle/widgets/menu_widgets/menu_widgets.dart';
 
-class MenuScreen extends ConsumerWidget {
+class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({
     Key? key,
     required this.userData,
@@ -19,14 +18,33 @@ class MenuScreen extends ConsumerWidget {
   final UserData userData;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends ConsumerState<MenuScreen> {
+  final numberList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  late final UserData userData;
+
+  @override
+  void initState() {
+    super.initState();
+    userData = widget.userData;
+    numberList.shuffle();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
 
     ref.listen(playerMatchingNotifierProvider, (previous, next) {
       if (next is PlayerMatched) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Board(),
+            builder: (context) => PuzzleScreen(
+              initialList: numberList,
+              id: next.id,
+              myInfo: userData,
+            ),
           ),
         );
       }
@@ -53,7 +71,10 @@ class MenuScreen extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    MultiplayerButton(myInfo: userData),
+                    MultiplayerButton(
+                      myInfo: userData,
+                      list: numberList,
+                    ),
                     const SizedBox(height: 16),
                     const SoloButton(),
                     const SizedBox(height: 30),
@@ -122,7 +143,7 @@ class PlayerQueuedWidget extends ConsumerWidget {
     return StreamBuilder<DocumentSnapshot>(
         stream: _databaseClient.isMatched(myInfo: myInfo),
         builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
             final queuedUserData =
                 snapshot.data?.data() as Map<String, dynamic>;
             bool isMatched = queuedUserData['ismatched'];

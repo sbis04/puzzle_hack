@@ -7,6 +7,8 @@ class Strings {
   static const otheruidFieldName = 'otheruid';
   static const mylistFieldName = 'mylist';
   static const otherlistFieldName = 'otherlist';
+  static const mymovesFieldName = 'mymoves';
+  static const othermovesFieldName = 'othermoves';
 }
 
 /// username can be made like this

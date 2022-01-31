@@ -39,8 +39,7 @@ class DatabaseClient {
 
   Future<UserData?> findEarliestUser({required UserData myInfo}) async {
     UserData? earliestUser;
-    final queueCollection =
-        firestore.collection(Strings.queueCollectionName);
+    final queueCollection = firestore.collection(Strings.queueCollectionName);
 
     QuerySnapshot queueSnapshot = await queueCollection
         // .where('uid', isNotEqualTo: myInfo.uid)
@@ -50,7 +49,6 @@ class DatabaseClient {
     var queueDocs = queueSnapshot.docs;
 
     if (queueDocs.isNotEmpty) {
-
       for (var element in queueDocs) {
         final data = element.data() as Map<String, dynamic>;
         if (data['uid'] == myInfo.uid) {
@@ -117,6 +115,8 @@ class DatabaseClient {
         Strings.otheruidFieldName: userToBeMatched.uid,
         Strings.mylistFieldName: numbers,
         Strings.otherlistFieldName: numbers,
+        Strings.mymovesFieldName: 0,
+        Strings.othermovesFieldName: 0,
       };
 
       await matchedCollection
@@ -156,6 +156,7 @@ class DatabaseClient {
     required String id,
     required UserData mydata,
     required List<int> numberList,
+    required int moves,
   }) async {
     final matchedCollectionDoc =
         firestore.collection(Strings.matchedCollectionName).doc(id);
@@ -169,6 +170,7 @@ class DatabaseClient {
     if (myUid == currentUid) {
       Map<String, dynamic> data = {
         Strings.mylistFieldName: numberList,
+        Strings.mymovesFieldName: moves,
       };
 
       await matchedCollectionDoc
@@ -179,6 +181,7 @@ class DatabaseClient {
     } else if (otherUid == currentUid) {
       Map<String, dynamic> data = {
         Strings.otherlistFieldName: numberList,
+        Strings.othermovesFieldName: moves,
       };
 
       await matchedCollectionDoc

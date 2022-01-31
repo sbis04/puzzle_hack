@@ -9,7 +9,7 @@ class Grid extends StatelessWidget {
   }) : super(key: key);
 
   final Function onTap;
-  final List<int> number;
+  final List<dynamic> number;
   final Color color;
 
   @override

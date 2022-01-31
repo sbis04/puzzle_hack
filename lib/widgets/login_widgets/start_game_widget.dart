@@ -4,7 +4,7 @@ import 'package:my_flutter_puzzle/application/states/anonymous_auth_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/screens/menu_screen.dart';
-import 'package:my_flutter_puzzle/widgets/board.dart';
+import 'package:my_flutter_puzzle/screens/puzzle_screen.dart';
 import 'package:my_flutter_puzzle/widgets/login_widgets/start_game_widget/start_game_button.dart';
 
 class StartGameWidget extends ConsumerWidget {
