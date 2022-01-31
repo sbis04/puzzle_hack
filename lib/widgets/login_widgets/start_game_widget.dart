@@ -18,22 +18,22 @@ class StartGameWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen(anonymousAuthNotificationProvider, (previous, next) {
+      if (next is StorageDone) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => MenuScreen(
+              userData: next.userData,
+            ),
+          ),
+          (route) => false,
+        );
+      }
+    });
+
     return Consumer(
       builder: (context, ref, child) {
         final state = ref.watch(anonymousAuthNotificationProvider);
-
-        ref.listen(anonymousAuthNotificationProvider, (previous, next) {
-          if (next is StorageDone) {
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => MenuScreen(
-                  userData: next.userData,
-                ),
-              ),
-              (route) => false,
-            );
-          }
-        });
 
         return state.when(
           () => StartGameButton(
