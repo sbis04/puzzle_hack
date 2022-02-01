@@ -143,9 +143,9 @@ class PlayerQueuedWidget extends ConsumerWidget {
     return StreamBuilder<DocumentSnapshot>(
         stream: _databaseClient.isMatched(myInfo: myInfo),
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.data!.data() != null) {
             final queuedUserData =
-                snapshot.data?.data() as Map<String, dynamic>;
+                snapshot.data!.data() as Map<String, dynamic>;
             bool isMatched = queuedUserData['ismatched'];
 
             if (isMatched) {
