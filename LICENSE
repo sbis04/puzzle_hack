@@ -1,12 +1,4 @@
-# Flutter Puzzle
-
-[![Codemagic build status](https://api.codemagic.io/apps/61f7d22dafa5dd12bdc7c1bf/61f7d22dafa5dd12bdc7c1be/status_badge.svg)](https://codemagic.io/apps/61f7d22dafa5dd12bdc7c1bf/61f7d22dafa5dd12bdc7c1be/latest_build)
-
-Multiplayer Flutter Puzzle
-
-> Web App link: https://flutterpuzzle.codemagic.app/
-
-## License
+MIT License
 
 Copyright (c) 2022 Soumi Bardhan, Souvik Biswas
 
