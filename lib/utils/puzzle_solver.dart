@@ -1,8 +1,8 @@
-import 'dart:html';
+import 'dart:math';
 
 class Node {
   final List<List<int>> board;
-  final int previous;
+  final Node previous;
   final int heuristic;
   final int depth;
 
@@ -13,7 +13,16 @@ class Node {
     required this.depth,
   });
 
-  List<int> generateChildren({required int size}) {
+  Node getNodeState() {
+    return Node(
+      board: board,
+      previous: previous,
+      heuristic: heuristic,
+      depth: depth,
+    );
+  }
+
+  List<Node> generateChildren({required int size}) {
     late int x;
     late int y;
 
@@ -46,196 +55,203 @@ class Node {
         }
         childBoard[x][y] = childBoard[child[0]][child[1]];
         childBoard[child[0]][child[1]] = 0;
-        Node(board: childBoard, previous: board, heuristic: nodeManhattan(childBoard), depth: depth + 1,);
-        // Node childNode = Node(childBoard, nodeManhatten(childBoard), depth + 1);
-        children.append(childNode);
+        final solverClient = PuzzleSolverClient(size: size);
 
-        return children;
+        final childNode = Node(
+          board: childBoard,
+          previous: this,
+          heuristic: solverClient.nodeManhattan(childBoard),
+          depth: depth + 1,
+        );
+        children.add(childNode);
       }
     }
+    return children;
   }
+}
 
-  List<int> createRandomBoard({required int n, bool solvable = true}) {
-    List<List<int>> board;
+class PuzzleSolverClient {
+  final int size;
+
+  PuzzleSolverClient({required this.size});
+
+  List<List<int>> createRandomBoard({required int n, bool solvable = true}) {
+    List<List<int>> board = [];
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        board[i][j] == 0;
+        board[i][j] = 0;
       }
     }
 
-    List<int> s;
+    List<int> s = [];
     for (int i = 0; i < (n * n); i++) {
       s[i] = i;
     }
 
     for (int i = 0; i < n; i++) {
       for (int j = 0; j < n; j++) {
-        int item = random.sample(s, 1);
-        board[i][j] = item[0];
-        s.remove(item[0]);
+        int item = s[Random().nextInt(s.length)];
+        board[i][j] = item;
+        s.remove(item);
       }
     }
 
-    if (solvable){
-      if (!(isSolvable(board))){
-        if ((board[2][1] != 0 ) and (board[2][2] != 0)){
-          temp = board[2][1];
+    if (solvable) {
+      if (!(isSolvable(board))) {
+        if ((board[2][1] != 0) && (board[2][2] != 0)) {
+          var temp = board[2][1];
           board[2][1] = board[2][2];
           board[2][2] = temp;
-        }
-        else{
-          temp = board[0][0];
+        } else {
+          var temp = board[0][0];
           board[0][0] = board[0][1];
           board[0][1] = temp;
         }
       }
     }
+
+    return board;
   }
 
-  void plain_print(int b){
+  void plainPrint(List<List<int>> b) {
     for (var i in b) {
       for (var j in i) {
-          print(j);
+        print('$j ');
       }
-      print();
     }
   }
 
-  int nodeManhattan(List<List<int>> board){
-      int sum = 0;
-      int n = board.length;
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            int x = (board[i][j] - 1)~/n;
-            int y = (board[i][j] - 1)%n;
-            if (board[i][j] == 0){
-              continue;
-            }
-            sum += (x-i).abs() + (y-j).abs();
-            
-            
-        }
-      }
-      return sum;
-  }
-
-  int manhattan(List<List<int>> board, List<List<int>> goal_nums){
-      int sum = 0;
-      int count = 0;
-      for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-          if board[i][j] in goal_nums{
-            int x = (board[i][j] - 1)/n;
-            int y = (board[i][j] - 1)%n;
-            
-            sum += abs(x-i) + abs(y-j);
-          }
-        }
-      }
-      return sum;
-  }
-
-  tuple to_tuple(List<List<int>> board){
-    List<int> lst;
+  int nodeManhattan(List<List<int>> board) {
+    int sum = 0;
+    int n = board.length;
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-              lst.add(board[i][j]);
+      for (int j = 0; j < n; j++) {
+        int x = (board[i][j] - 1) ~/ n;
+        int y = (board[i][j] - 1) % n;
+        if (board[i][j] == 0) {
+          continue;
         }
+        sum += (x - i).abs() + (y - j).abs();
+      }
+    }
+    return sum;
   }
 
-  return tuple(lst);
+  int manhattan(List<List<int>> board, List<int> goalNums) {
+    int sum = 0;
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        if (goalNums.contains(board[i][j])) {
+          int x = (board[i][j] - 1) ~/ size;
+          int y = ((board[i][j] - 1) % size).toInt();
 
-}
-
-bool isGoal(board, goal_nums){
-  int count = 0;
-  for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-          count+=1;
-          if ((var count in goal_nums) && (board[i][j]!=count)){
-                return false;
-          }
+          sum += (x - i).abs() + (y - j).abs();
         }
+      }
+    }
+    return sum;
+  }
+
+  List<int> toTuple(List<List<int>> board) {
+    List<int> lst = [];
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        lst.add(board[i][j]);
+      }
+    }
+
+    return lst;
+  }
+
+  bool isGoal(List<List<int>> board, List<int> goalNums) {
+    int count = 0;
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
+        count += 1;
+        if ((goalNums.contains(count)) && (board[i][j] != count)) {
+          return false;
         }
-  return true;
-}
+      }
+    }
+    return true;
+  }
 
-
-
-bool isSolvable(board){
-  int n = board.length;
-  List<int> lst = [];
-  bool blankOnEven = false;
-  for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-          if (board[i][j] != 0){
-            lst.add(board[i][j]);
-          }
-          else{
-            if (i%2 == 0){
-              blankOnEven = true;
-            }
+  bool isSolvable(board) {
+    int n = board.length;
+    List<int> lst = [];
+    bool blankOnEven = false;
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (board[i][j] != 0) {
+          lst.add(board[i][j]);
+        } else {
+          if (i % 2 == 0) {
+            blankOnEven = true;
           }
         }
       }
-      int inversions = 0;
+    }
+    int inversions = 0;
     for (int i = 0; i < lst.length; i++) {
-        for (int j = i+1; j < lst.length; j++) {
-            if (lst[i]>lst[j]){
-              inversions += 1;
-            }
+      for (int j = i + 1; j < lst.length; j++) {
+        if (lst[i] > lst[j]) {
+          inversions += 1;
         }
       }
+    }
 
-    if (n%2 == 1){
-      if (inversions % 2 ==1){
+    if (n % 2 == 1) {
+      if (inversions % 2 == 1) {
         return false;
-      }
-      else{
+      } else {
         return true;
       }
     }
 
-    if (   (   (inversions % 2 == 0) && (blankOnEven == true)) || (   (inversions % 2 == 1) && (blankOnEven == false)  )){
+    if (((inversions % 2 == 0) && (blankOnEven == true)) ||
+        ((inversions % 2 == 1) && (blankOnEven == false))) {
       return false;
     }
     return true;
-}
-
-}
-
-class PuzzleSolverClient {
-
-  List<int> h = [];
-  Set<int>  visited = Set();
-  int n = 4;
-
-  List<List<int>> board = createRandomBoard(n);
-  while (isSolvable(board) == false) {
-    board = createRandomBoard(n)
   }
 
-  List<int> goalStates = [];
-  int count = 1;
-
-  List<List<int>> inOrderGoalStates(n){
-    List<List<int>> goalStates = [];
+  List<Set<int>> inOrderGoalStates(n) {
+    List<Set<int>> goalStates = [];
     int c = 1;
-    for (int i = 0; i < lst.length; i++) {
-        for (int j = i+1; j < lst.length; j++) {
-          if ((i==(n-1)) && (j==n-1)){
-            break;
-          }
-          Set<int> set1 = Set(c);
-          goalStates.add(set1);
-          if ((i>0) || (j>0)){
-            goalStates[-1] = goalStates[-1].union(goalStates[-2]);
-          }
-          c+=1
+    for (int i = 0; i < n; i++) {
+      for (int j = i + 1; j < n; j++) {
+        if ((i == (n - 1)) && (j == n - 1)) {
+          break;
         }
+        Set<int> set1 = {c};
+        goalStates.add(set1);
+        if ((i > 0) || (j > 0)) {
+          // Check later if error occurs
+          goalStates.last =
+              (goalStates.last).union(goalStates[goalStates.length - 2]);
+        }
+        c += 1;
+      }
     }
     return goalStates;
-
   }
-  
+
+  // TODO : Write other functions
+
+  runner() {
+    List<int> h = [];
+    Set<int> visited = Set();
+    int n = 4;
+
+    final solver = PuzzleSolverClient(size: n);
+
+    List<List<int>> board = solver.createRandomBoard(n: n);
+    while (isSolvable(board) == false) {
+      board = createRandomBoard(n: n);
+    }
+
+    List<int> goalStates = [];
+    int count = 1;
+  }
 }
