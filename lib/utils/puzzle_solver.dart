@@ -147,19 +147,59 @@ class Node {
 
 }
 
-int isGoal(board, goal_nums){
+bool isGoal(board, goal_nums){
   int count = 0;
   for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
           count+=1;
-          if (count in goal_nums) && (board[i][j]!=count){
+          if ((var count in goal_nums) && (board[i][j]!=count)){
                 return false;
           }
-
-
-}
-  }
+        }
+        }
   return true;
+}
+
+
+
+bool isSolvable(board){
+  int n = board.length;
+  List<int> lst = [];
+  bool blankOnEven = false;
+  for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+          if (board[i][j] != 0){
+            lst.add(board[i][j]);
+          }
+          else{
+            if (i%2 == 0){
+              blankOnEven = true;
+            }
+          }
+        }
+      }
+      int inversions = 0;
+    for (int i = 0; i < lst.length; i++) {
+        for (int j = i+1; j < lst.length; j++) {
+            if (lst[i]>lst[j]){
+              inversions += 1;
+            }
+        }
+      }
+
+    if (n%2 == 1){
+      if (inversions % 2 ==1){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+
+    if (   (   (inversions % 2 == 0) && (blankOnEven == true)) || (   (inversions % 2 == 1) && (blankOnEven == false)  )){
+      return false;
+    }
+    return true;
 }
 
 }
