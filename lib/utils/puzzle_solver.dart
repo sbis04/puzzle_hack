@@ -137,7 +137,7 @@ class PuzzleSolverClient {
     return sum;
   }
 
-  int manhattan(List<List<int>> board, List<int> goalNums) {
+  int manhattan(List<List<int>> board, Set<int> goalNums) {
     int sum = 0;
     int count = 0;
     for (int i = 0; i < size; i++) {
@@ -164,7 +164,7 @@ class PuzzleSolverClient {
     return lst;
   }
 
-  bool isGoal(List<List<int>> board, List<int> goalNums) {
+  bool isGoal(List<List<int>> board, Set<int> goalNums) {
     int count = 0;
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
@@ -238,6 +238,47 @@ class PuzzleSolverClient {
   }
 
   // TODO : Write other functions
+  List<Set<int>> rowColGoalStates(n) {
+    List<Set<int>> goalStates = [];
+    for (int layer = 0; layer < n - 2; layer++) {
+      for (int i = 0; i < n - layer; i++) {
+        Set<int> set1 = {(n * layer) + i + 1};
+        goalStates.add(set1);
+        if (goalStates.length > 1) {
+          goalStates.last =
+              (goalStates.last).union(goalStates[goalStates.length - 2]);
+        }
+      }
+
+      for (int i = 0; i < n - layer - 1; i++) {
+        Set<int> set1 = {(n + 1) + (i * n)};
+        goalStates.add(set1);
+        if (goalStates.length > 1) {
+          goalStates.last =
+              (goalStates.last).union(goalStates[goalStates.length - 2]);
+        }
+      }
+    }
+    Set<int> set1 = {};
+
+    for (int i = 0; i < n * n; i++) {
+      set1.add(i);
+    }
+
+    goalStates.add(set1);
+
+    return (goalStates);
+  }
+
+  StringBuffer toString(board) {
+    StringBuffer s = "";
+    for (var i in board) {
+      for (var j in i) {
+        s = s + j.toString() + " ";
+      }
+    }
+    return s;
+  }
 
   runner() {
     List<int> h = [];
@@ -251,7 +292,59 @@ class PuzzleSolverClient {
       board = createRandomBoard(n: n);
     }
 
-    List<int> goalStates = [];
+    List<Set<int>> goalStates = [];
     int count = 1;
+
+    // declaring here but must be taken as arg
+    String FLAG = 'A_STAR';
+
+    if (FLAG == 'A__STAR') {
+      goalStates = rowColGoalStates(n);
+      goalStates = [goalStates[-1]];
+    } else if (FLAG == "HUMAN") {
+      goalStates = rowColGoalStates(n);
+    }
+
+    int hScaleFactor = 3;
+    int currGoal = 0;
+
+    Node root = Node(
+        board: board,
+        previous: Null,
+        heuristic: manhattan(board, goalStates[currGoal]),
+        depth: 0);
+
+    // add priority queue library
+    // pq.heappush(h, (root.depth +hScaleFactor*root.heauristic, root));
+    // f  = open("solution.txt","w");
+
+    while (h.length > 0) {
+      count += 1;
+      //node = pq.heappop(h)[1];
+
+      if (isGoal(node.board, goalStates[currGoal])) {
+        print("reached goal $currGoal $goalStates");
+        plainPrint(node.board);
+        print();
+        h = [];
+        currGoal += 1;
+
+        if (currGoal == goalStates.length) {
+          Node temp = node;
+          boards = [];
+          while (temp != NULL) {
+            boards.add(temp.board);
+            temp = temp.previous;
+          }
+          boards.reverse();
+          for (var i in boards) {
+            f.write(toString(i));
+            f.write("\n";)
+          }
+          f.close();
+          break;
+        }
+      }
+    }
   }
 }
