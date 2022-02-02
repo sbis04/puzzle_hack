@@ -46,7 +46,8 @@ class Node {
         }
         childBoard[x][y] = childBoard[child[0]][child[1]];
         childBoard[child[0]][child[1]] = 0;
-        Node childNode = Node(childBoard, nodeManhatten(childBoard), depth + 1);
+        Node(board: childBoard, previous: board, heuristic: nodeManhattan(childBoard), depth: depth + 1,);
+        // Node childNode = Node(childBoard, nodeManhatten(childBoard), depth + 1);
         children.append(childNode);
 
         return children;
@@ -100,20 +101,19 @@ class Node {
     }
   }
 
-  int node_manhattan(List<List<int>> board){
+  int nodeManhattan(List<List<int>> board){
       int sum = 0;
-      int n = 0;
-      for (var k in board) {
-        n+=1;
-      }
+      int n = board.length;
       for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            int x = (board[i][j] - 1)/n;
+            int x = (board[i][j] - 1)~/n;
             int y = (board[i][j] - 1)%n;
             if (board[i][j] == 0){
               continue;
             }
-            sum += abs(x-i) + abs(y-j);
+            sum += (x-i).abs() + (y-j).abs();
+            
+            
         }
       }
       return sum;
@@ -202,4 +202,40 @@ bool isSolvable(board){
     return true;
 }
 
+}
+
+class PuzzleSolverClient {
+
+  List<int> h = [];
+  Set<int>  visited = Set();
+  int n = 4;
+
+  List<List<int>> board = createRandomBoard(n);
+  while (isSolvable(board) == false) {
+    board = createRandomBoard(n)
+  }
+
+  List<int> goalStates = [];
+  int count = 1;
+
+  List<List<int>> inOrderGoalStates(n){
+    List<List<int>> goalStates = [];
+    int c = 1;
+    for (int i = 0; i < lst.length; i++) {
+        for (int j = i+1; j < lst.length; j++) {
+          if ((i==(n-1)) && (j==n-1)){
+            break;
+          }
+          Set<int> set1 = Set(c);
+          goalStates.add(set1);
+          if ((i>0) || (j>0)){
+            goalStates[-1] = goalStates[-1].union(goalStates[-2]);
+          }
+          c+=1
+        }
+    }
+    return goalStates;
+
+  }
+  
 }
