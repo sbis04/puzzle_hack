@@ -1,8 +1,10 @@
 import 'dart:math';
+import 'package:collection/collection.dart';
+import 'package:tuple/tuple.dart';
 
 class Node {
   final List<List<int>> board;
-  final Node previous;
+  final Node? previous;
   final int heuristic;
   final int depth;
 
@@ -270,8 +272,8 @@ class PuzzleSolverClient {
     return (goalStates);
   }
 
-  StringBuffer toString(board) {
-    StringBuffer s = "";
+  String convertToString(board) {
+    String s = "";
     for (var i in board) {
       for (var j in i) {
         s = s + j.toString() + " ";
@@ -281,8 +283,11 @@ class PuzzleSolverClient {
   }
 
   runner() {
-    List<int> h = [];
-    Set<int> visited = Set();
+    // here "h" is "queue"
+    final queue = HeapPriorityQueue<Tuple2<int, Node>>();
+
+    // visited is taken as set to keep the elements unique
+    Set<List<int>> visited = {};
     int n = 4;
 
     final solver = PuzzleSolverClient(size: n);
@@ -309,42 +314,66 @@ class PuzzleSolverClient {
     int currGoal = 0;
 
     Node root = Node(
-        board: board,
-        previous: Null,
-        heuristic: manhattan(board, goalStates[currGoal]),
-        depth: 0);
+      board: board,
+      previous: null,
+      heuristic: manhattan(board, goalStates[currGoal]),
+      depth: 0,
+    );
 
-    // add priority queue library
-    // pq.heappush(h, (root.depth +hScaleFactor*root.heauristic, root));
-    // f  = open("solution.txt","w");
+    queue.add(
+        Tuple2<int, Node>(root.depth + hScaleFactor * root.heuristic, root));
 
-    while (h.length > 0) {
+    while (queue.isNotEmpty) {
       count += 1;
       //node = pq.heappop(h)[1];
+      final node = queue.removeFirst().item2;
 
       if (isGoal(node.board, goalStates[currGoal])) {
         print("reached goal $currGoal $goalStates");
         plainPrint(node.board);
-        print();
-        h = [];
+        // print();
+        queue.clear();
         currGoal += 1;
 
         if (currGoal == goalStates.length) {
-          Node temp = node;
-          boards = [];
-          while (temp != NULL) {
+          Node? temp = node;
+          List<List<List<int>>> boards = [];
+          while (temp != null) {
             boards.add(temp.board);
             temp = temp.previous;
           }
-          boards.reverse();
+          boards = boards.reversed.toList();
           for (var i in boards) {
-            f.write(toString(i));
-            f.write("\n";)
+            print(convertToString(i));
+            print("\n");
           }
-          f.close();
           break;
         }
+
+        root = Node(
+          board: board,
+          previous: null,
+          heuristic: manhattan(board, goalStates[currGoal]),
+          depth: 0,
+        );
+
+        queue.add(Tuple2(root.depth + hScaleFactor * root.heuristic, root));
+      }
+
+      var t = toTuple(node.board);
+      visited.add(t);
+      final children = node.generateChildren(size: size);
+      for (var child in children) {
+        t = toTuple(child.board);
+        if (visited.contains(t)) continue;
+        queue.add(
+          Tuple2(
+              child.depth +
+                  hScaleFactor * manhattan(child.board, goalStates[currGoal]),
+              child),
+        );
       }
     }
+    print('Reached the goal state and solved the sliding puzzle!');
   }
 }
