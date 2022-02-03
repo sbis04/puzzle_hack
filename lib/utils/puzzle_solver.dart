@@ -239,7 +239,6 @@ class PuzzleSolverClient {
     return goalStates;
   }
 
-  // TODO : Write other functions
   List<Set<int>> rowColGoalStates(n) {
     List<Set<int>> goalStates = [];
     for (int layer = 0; layer < n - 2; layer++) {
