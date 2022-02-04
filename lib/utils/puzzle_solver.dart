@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:tuple/tuple.dart';
@@ -36,6 +37,9 @@ class Node {
         }
       }
     }
+
+    // print('x: $x, y: $y');
+
     List<List<int>> valList = [
       [x, y - 1],
       [x, y + 1],
@@ -44,17 +48,23 @@ class Node {
     ];
 
     List<Node> children = [];
-    int n = 4;
 
     for (var child in valList) {
       if ((child[0] >= 0) &&
-          (child[0] < n) &&
+          (child[0] < size) &&
           (child[1] >= 0) &&
-          (child[1] < n)) {
+          (child[1] < size)) {
         List<List<int>> childBoard = [];
+        // ERROR (FIXED): This board is getting modified
+        // print('------------------------------');
+        // print('BOARD: $board');
+        // print('------------------------------');
         for (var row in board) {
-          childBoard.add(row);
+          childBoard.add([...row]);
         }
+        // print('***********************************');
+        // print('CHILD: $childBoard');
+        // print('***********************************');
         childBoard[x][y] = childBoard[child[0]][child[1]];
         childBoard[child[0]][child[1]] = 0;
         final solverClient = PuzzleSolverClient(size: size);
@@ -80,14 +90,16 @@ class PuzzleSolverClient {
   List<List<int>> createRandomBoard({required int n, bool solvable = true}) {
     List<List<int>> board = [];
     for (int i = 0; i < n; i++) {
+      List<int> temp = [];
       for (int j = 0; j < n; j++) {
-        board[i][j] = 0;
+        temp.add(0);
       }
+      board.add(temp);
     }
 
     List<int> s = [];
     for (int i = 0; i < (n * n); i++) {
-      s[i] = i;
+      s.add(i);
     }
 
     for (int i = 0; i < n; i++) {
@@ -126,16 +138,16 @@ class PuzzleSolverClient {
   int nodeManhattan(List<List<int>> board) {
     int sum = 0;
     int n = board.length;
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
         int x = (board[i][j] - 1) ~/ n;
         int y = (board[i][j] - 1) % n;
-        if (board[i][j] == 0) {
-          continue;
+        if (board[i][j] != 0) {
+          sum += (x - i).abs() + (y - j).abs();
         }
-        sum += (x - i).abs() + (y - j).abs();
       }
     }
+    // print('SUM: $sum');
     return sum;
   }
 
@@ -211,8 +223,8 @@ class PuzzleSolverClient {
       }
     }
 
-    if (((inversions % 2 == 0) && (blankOnEven == true)) ||
-        ((inversions % 2 == 1) && (blankOnEven == false))) {
+    if (((inversions % 2 == 0) && blankOnEven) ||
+        ((inversions % 2 == 1) && !blankOnEven)) {
       return false;
     }
     return true;
@@ -229,7 +241,6 @@ class PuzzleSolverClient {
         Set<int> set1 = {c};
         goalStates.add(set1);
         if ((i > 0) || (j > 0)) {
-          // Check later if error occurs
           goalStates.last =
               (goalStates.last).union(goalStates[goalStates.length - 2]);
         }
@@ -262,7 +273,7 @@ class PuzzleSolverClient {
     }
     Set<int> set1 = {};
 
-    for (int i = 0; i < n * n; i++) {
+    for (int i = 1; i < n * n; i++) {
       set1.add(i);
     }
 
@@ -271,29 +282,39 @@ class PuzzleSolverClient {
     return (goalStates);
   }
 
-  String convertToString(board) {
-    String s = "";
-    for (var i in board) {
-      for (var j in i) {
-        s = s + j.toString() + " ";
-      }
+  List<int> convertTo1D(List<List<int>> board) {
+    List<int> board1D = [];
+    for (var row in board) {
+      board1D.addAll(row);
     }
-    return s;
+    return board1D;
   }
 
-  runner() {
+  List<List<int>>? runner() {
     // here "h" is "queue"
-    final queue = HeapPriorityQueue<Tuple2<int, Node>>();
+    final queue = HeapPriorityQueue<Tuple2<int, Node>>(
+        (a, b) => a.item1.compareTo(b.item1));
 
     // visited is taken as set to keep the elements unique
-    Set<List<int>> visited = {};
-    int n = 4;
+    HashSet<List<int>> visited = HashSet<List<int>>();
 
-    final solver = PuzzleSolverClient(size: n);
+    final solver = PuzzleSolverClient(size: size);
 
-    List<List<int>> board = solver.createRandomBoard(n: n);
-    while (isSolvable(board) == false) {
-      board = createRandomBoard(n: n);
+    // List<List<int>> board = solver.createRandomBoard(n: size);
+    // while (isSolvable(board) == false) {
+    //   board = createRandomBoard(n: size);
+    // }
+
+    List<List<int>> board = [
+      [11, 4, 6, 0],
+      [13, 5, 15, 2],
+      [9, 3, 1, 8],
+      [10, 12, 7, 14]
+    ];
+
+    print('BOARD:');
+    for (var element in board) {
+      print(element);
     }
 
     List<Set<int>> goalStates = [];
@@ -302,15 +323,20 @@ class PuzzleSolverClient {
     // declaring here but must be taken as arg
     String FLAG = 'A_STAR';
 
-    if (FLAG == 'A__STAR') {
-      goalStates = rowColGoalStates(n);
-      goalStates = [goalStates[-1]];
+    if (FLAG == 'A_STAR') {
+      goalStates = rowColGoalStates(size);
+      goalStates = [goalStates.last];
     } else if (FLAG == "HUMAN") {
-      goalStates = rowColGoalStates(n);
+      goalStates = rowColGoalStates(size);
     }
 
     int hScaleFactor = 3;
     int currGoal = 0;
+
+    // print('----------------------------------------------');
+    // print('GOAL STATE: $goalStates');
+    // print('huristic: ${manhattan(board, goalStates[currGoal])}');
+    // print('----------------------------------------------');
 
     Node root = Node(
       board: board,
@@ -319,18 +345,23 @@ class PuzzleSolverClient {
       depth: 0,
     );
 
+    print('int: ${root.depth + hScaleFactor * root.heuristic}');
+
     queue.add(
         Tuple2<int, Node>(root.depth + hScaleFactor * root.heuristic, root));
 
+    // print('----------------------------------------------');
+    // print('initial queue: ${queue.first.item2.board}');
+    // print('----------------------------------------------');
+
     while (queue.isNotEmpty) {
       count += 1;
-      //node = pq.heappop(h)[1];
       final node = queue.removeFirst().item2;
+      // print('----------------------------------------------');
+      // print('popped: ${node.board}');
+      // print('----------------------------------------------');
 
       if (isGoal(node.board, goalStates[currGoal])) {
-        print("reached goal $currGoal $goalStates");
-        plainPrint(node.board);
-        // print();
         queue.clear();
         currGoal += 1;
 
@@ -342,11 +373,11 @@ class PuzzleSolverClient {
             temp = temp.previous;
           }
           boards = boards.reversed.toList();
+          List<List<int>> finalBoards = [];
           for (var i in boards) {
-            print(convertToString(i));
-            print("\n");
+            finalBoards.add(convertTo1D(i));
           }
-          break;
+          return finalBoards;
         }
 
         root = Node(
@@ -361,18 +392,26 @@ class PuzzleSolverClient {
 
       var t = toTuple(node.board);
       visited.add(t);
+
       final children = node.generateChildren(size: size);
-      for (var child in children) {
-        t = toTuple(child.board);
-        if (visited.contains(t)) continue;
-        queue.add(
-          Tuple2(
-              child.depth +
-                  hScaleFactor * manhattan(child.board, goalStates[currGoal]),
-              child),
-        );
+      for (Node child in children) {
+        var tt = toTuple(child.board);
+
+        bool isSetEqual = visited.any((value) {
+          return value.equals(tt);
+        });
+
+        if (!isSetEqual) {
+          queue.add(
+            Tuple2(
+                child.depth +
+                    hScaleFactor * manhattan(child.board, goalStates[currGoal]),
+                child),
+          );
+          // print('${queue.first.item1}, ${queue.first.item2.board}');
+        }
       }
     }
-    print('Reached the goal state and solved the sliding puzzle!');
+    return null;
   }
 }
