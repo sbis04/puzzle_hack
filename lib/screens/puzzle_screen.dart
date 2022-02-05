@@ -218,6 +218,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
               ),
               MovesText(moves: _moves),
               Grid(
+                // TODO: Use dynamic size
+                puzzleSize: 4,
                 key: UniqueKey(),
                 number: myList,
                 onTap: onClick,
@@ -271,6 +273,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                       ),
                       MovesText(moves: moves ?? _moves),
                       Grid(
+                        // TODO: Use dynamic size
+                        puzzleSize: 4,
                         key: UniqueKey(),
                         number: numberList ?? opponentList,
                         onTap: () {},
@@ -286,6 +290,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                     ),
                     MovesText(moves: _moves),
                     Grid(
+                      // TODO: Use dynamic size
+                      puzzleSize: 4,
                       key: UniqueKey(),
                       number: opponentList,
                       onTap: () {},
