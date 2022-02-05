@@ -87,23 +87,23 @@ class PuzzleSolverClient {
 
   PuzzleSolverClient({required this.size});
 
-  List<List<int>> createRandomBoard({required int n, bool solvable = true}) {
+  List<List<int>> createRandomBoard({bool solvable = true}) {
     List<List<int>> board = [];
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < size; i++) {
       List<int> temp = [];
-      for (int j = 0; j < n; j++) {
+      for (int j = 0; j < size; j++) {
         temp.add(0);
       }
       board.add(temp);
     }
 
     List<int> s = [];
-    for (int i = 0; i < (n * n); i++) {
+    for (int i = 0; i < (size * size); i++) {
       s.add(i);
     }
 
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < size; j++) {
         int item = s[Random().nextInt(s.length)];
         board[i][j] = item;
         s.remove(item);
@@ -290,7 +290,7 @@ class PuzzleSolverClient {
     return board1D;
   }
 
-  List<List<int>>? runner() {
+  List<List<int>>? runner(List<List<int>> board) {
     // here "h" is "queue"
     final queue = HeapPriorityQueue<Tuple2<int, Node>>(
         (a, b) => a.item1.compareTo(b.item1));
@@ -305,12 +305,13 @@ class PuzzleSolverClient {
     //   board = createRandomBoard(n: size);
     // }
 
-    List<List<int>> board = [
-      [11, 4, 6, 0],
-      [13, 5, 15, 2],
-      [9, 3, 1, 8],
-      [10, 12, 7, 14]
-    ];
+    // TEST BOARD
+    // List<List<int>> board = [
+    //   [11, 4, 6, 0],
+    //   [13, 5, 15, 2],
+    //   [9, 3, 1, 8],
+    //   [10, 12, 7, 14]
+    // ];
 
     print('BOARD:');
     for (var element in board) {
