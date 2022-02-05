@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
+import 'package:my_flutter_puzzle/screens/puzzle_solo_screen.dart';
 
 class SoloButton extends StatelessWidget {
   const SoloButton({
@@ -23,7 +24,12 @@ class SoloButton extends StatelessWidget {
           ),
         ),
         onPressed: () {
-          // TODO: Naviagte to solo screen
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const PuzzleSoloScreen(),
+            ),
+            (route) => false,
+          );
         },
         child: const Padding(
           padding: EdgeInsets.all(16.0),
