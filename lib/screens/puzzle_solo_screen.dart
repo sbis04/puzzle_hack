@@ -3,9 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
-import 'package:my_flutter_puzzle/widgets/puzzle_widgets/puzzle_widgets.dart';
 
-import '../widgets/grid.dart';
+import 'package:my_flutter_puzzle/widgets/puzzle_widgets/puzzle_widgets.dart';
 
 class PuzzleSoloScreen extends StatefulWidget {
   const PuzzleSoloScreen({
@@ -23,20 +22,37 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
   List<int>? myList;
   int _moves = 0;
   final _puzzleSize = 3;
+  final int _animationSpeedInMilliseconds = 300;
+
+  Map<int, FractionalOffset>? _offsetMap;
 
   @override
   void initState() {
     super.initState();
     _solverClient = PuzzleSolverClient(size: _puzzleSize);
-    scrambleBoard();
+    initBoard();
   }
 
   scrambleBoard() {
     final generated2DBoard = _solverClient.createRandomBoard();
     final generated1DBoard = _solverClient.convertTo1D(generated2DBoard);
+    updateOffset(generated1DBoard);
     setState(() {
       _board2D = generated2DBoard;
       myList = generated1DBoard;
+      _moves = 0;
+    });
+  }
+
+  initBoard() {
+    final generated2DBoard = _solverClient.createRandomBoard();
+    final generated1DBoard = _solverClient.convertTo1D(generated2DBoard);
+
+    createOffset(generated1DBoard);
+    setState(() {
+      _board2D = generated2DBoard;
+      myList = generated1DBoard;
+
       _moves = 0;
     });
   }
@@ -47,11 +63,14 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
 
       if (boardStates != null) {
         for (var board in boardStates) {
-          await Future.delayed(const Duration(milliseconds: 100));
+          await Future.delayed(Duration(
+            milliseconds: _animationSpeedInMilliseconds,
+          ));
           setState(() {
             myList = board;
             _moves++;
           });
+          updateOffset(myList!);
         }
       }
     }
@@ -72,41 +91,33 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
       //current element moves up
       if ((currentTileRow - 1 == emptyTilePosRow) &&
           (currentTileCol == emptyTilePosCol)) {
-        setState(() {
-          myList![emptyTilePosIndex] = myList![index];
-          myList![index] = 0;
-          _moves++;
-        });
+        myList![emptyTilePosIndex] = myList![index];
+        myList![index] = 0;
+        _moves++;
       }
 
       //current element moves down
       else if ((currentTileRow + 1 == emptyTilePosRow) &&
           (currentTileCol == emptyTilePosCol)) {
-        setState(() {
-          myList![emptyTilePosIndex] = myList![index];
-          myList![index] = 0;
-          _moves++;
-        });
+        myList![emptyTilePosIndex] = myList![index];
+        myList![index] = 0;
+        _moves++;
       }
 
       //current element moves left
       else if ((currentTileRow == emptyTilePosRow) &&
           (currentTileCol + 1 == emptyTilePosCol)) {
-        setState(() {
-          myList![emptyTilePosIndex] = myList![index];
-          myList![index] = 0;
-          _moves++;
-        });
+        myList![emptyTilePosIndex] = myList![index];
+        myList![index] = 0;
+        _moves++;
       }
 
       //current element moves right
       else if ((currentTileRow == emptyTilePosRow) &&
           (currentTileCol - 1 == emptyTilePosCol)) {
-        setState(() {
-          myList![emptyTilePosIndex] = myList![index];
-          myList![index] = 0;
-          _moves++;
-        });
+        myList![emptyTilePosIndex] = myList![index];
+        myList![index] = 0;
+        _moves++;
       } else {
         if (currentTileCol == emptyTilePosCol) {
           int low;
@@ -119,17 +130,14 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
 
             int i = low;
             while (i < high) {
-              setState(() {
-                myList![(i * _puzzleSize) + emptyTilePosCol] =
-                    myList![(((i + 1) * _puzzleSize) + emptyTilePosCol)];
-              });
+              myList![(i * _puzzleSize) + emptyTilePosCol] =
+                  myList![(((i + 1) * _puzzleSize) + emptyTilePosCol)];
 
               i += 1;
             }
-            setState(() {
-              myList![(high * _puzzleSize) + emptyTilePosCol] = 0;
-              _moves++;
-            });
+
+            myList![(high * _puzzleSize) + emptyTilePosCol] = 0;
+            _moves++;
           }
 
           //multiple elements move down
@@ -139,17 +147,14 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
 
             int i = low;
             while (i > high) {
-              setState(() {
-                myList![(i * _puzzleSize) + emptyTilePosCol] =
-                    myList![(((i - 1) * _puzzleSize) + emptyTilePosCol)];
-              });
+              myList![(i * _puzzleSize) + emptyTilePosCol] =
+                  myList![(((i - 1) * _puzzleSize) + emptyTilePosCol)];
 
               i -= 1;
             }
-            setState(() {
-              myList![(high * _puzzleSize) + emptyTilePosCol] = 0;
-              _moves++;
-            });
+
+            myList![(high * _puzzleSize) + emptyTilePosCol] = 0;
+            _moves++;
           }
         }
 
@@ -165,17 +170,14 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
 
             int i = low;
             while (i < high) {
-              setState(() {
-                myList![(emptyTilePosRow * _puzzleSize) + i] =
-                    myList![(emptyTilePosRow * _puzzleSize) + (i + 1)];
-              });
+              myList![(emptyTilePosRow * _puzzleSize) + i] =
+                  myList![(emptyTilePosRow * _puzzleSize) + (i + 1)];
 
               i += 1;
             }
-            setState(() {
-              myList![high + (emptyTilePosRow * _puzzleSize)] = 0;
-              _moves++;
-            });
+
+            myList![high + (emptyTilePosRow * _puzzleSize)] = 0;
+            _moves++;
           }
 
           //multiple elements move right
@@ -185,44 +187,146 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
 
             int i = low;
             while (i > high) {
-              setState(() {
-                myList![(i + (emptyTilePosRow * _puzzleSize))] =
-                    myList![(i - 1) + (emptyTilePosRow * _puzzleSize)];
-              });
+              myList![(i + (emptyTilePosRow * _puzzleSize))] =
+                  myList![(i - 1) + (emptyTilePosRow * _puzzleSize)];
 
               i -= 1;
             }
-            setState(() {
-              myList![high + (emptyTilePosRow * _puzzleSize)] = 0;
-              _moves++;
-            });
+
+            myList![high + (emptyTilePosRow * _puzzleSize)] = 0;
+            _moves++;
           }
         }
       }
+
+      // Update Offset list
+      // setState(() {
+      // updateOffset(myList!);
+      // });
+      updateOffset(myList!);
+      setState(() {});
 
       log('List: $myList');
       log('-----------------------');
     }
   }
 
+  createOffset(List<int> board) {
+    Map<int, FractionalOffset> offsetMap = {};
+    int j = 0;
+
+    log('BOARD: $board');
+
+    for (int i = 0; i < board.length; i++) {
+      final xMod = i % _puzzleSize;
+      double x = xMod / (_puzzleSize - 1);
+
+      if (x % i == 0 && i != 0) j++;
+      int yMod = j % _puzzleSize;
+      double y = yMod / (_puzzleSize - 1);
+
+      offsetMap.addEntries([
+        MapEntry<int, FractionalOffset>(
+          board[i],
+          FractionalOffset(x, y),
+        )
+      ]);
+    }
+
+    log('INITIAL OFFSET MAP: $offsetMap');
+    setState(() {
+      _offsetMap = offsetMap;
+    });
+  }
+
+  updateOffset(List<int> board) {
+    int j = 0;
+
+    for (int i = 0; i < board.length; i++) {
+      final xMod = i % _puzzleSize;
+      double x = xMod / (_puzzleSize - 1);
+
+      if (x % i == 0 && i != 0) j++;
+      int yMod = j % _puzzleSize;
+      double y = yMod / (_puzzleSize - 1);
+
+      _offsetMap![board[i]] = FractionalOffset(x, y);
+    }
+    log('OFFSET MAP: $_offsetMap');
+  }
+
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var boardSize = screenSize.width * 0.4;
+
+    var spacing = 4;
+    var eachBoxSize = (boardSize / _puzzleSize) - (spacing * (_puzzleSize - 1));
+
     return Scaffold(
       backgroundColor: Colors.white,
-      body: myList != null
+      body: myList != null && _offsetMap != null
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Row(),
                   MovesText(moves: _moves),
-                  Grid(
-                    puzzleSize: _puzzleSize,
-                    key: UniqueKey(),
-                    number: myList!,
-                    onTap: onClick,
-                    color: const Color(0xFF2868d7),
+                  SizedBox(
+                    height: boardSize,
+                    width: boardSize,
+                    child: Stack(
+                      children: [
+                        for (int i = 0; i < _offsetMap!.length; i++)
+                          _offsetMap!.entries.toList()[i].key != 0
+                              ? AnimatedAlign(
+                                  alignment:
+                                      _offsetMap!.entries.toList()[i].value,
+                                  duration: Duration(
+                                    milliseconds: _animationSpeedInMilliseconds,
+                                  ),
+                                  curve: Curves.easeInOut,
+                                  child: GestureDetector(
+                                    onTap: () => onClick(myList!.indexOf(
+                                        _offsetMap!.entries.toList()[i].key)),
+                                    child: Card(
+                                      elevation: 4,
+                                      color: const Color(0xFF2868d7),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: SizedBox(
+                                        height: eachBoxSize,
+                                        width: eachBoxSize,
+                                        child: Center(
+                                          child: Text(
+                                            _offsetMap!.entries
+                                                .toList()[i]
+                                                .key
+                                                .toString(),
+                                            style: const TextStyle(
+                                              fontSize: 60,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox(),
+                      ],
+                    ),
                   ),
+                  // AnimatedGrid(
+                  //   puzzleSize: _puzzleSize,
+                  //   key: UniqueKey(),
+                  //   number: myList!,
+                  //   offsetList: _offsetList!,
+                  //   onTap: onClick,
+                  //   color: const Color(0xFF2868d7),
+                  // ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
