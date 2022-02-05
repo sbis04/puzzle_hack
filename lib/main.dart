@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/screens/login_screen.dart';
 import 'package:my_flutter_puzzle/screens/puzzle_screen.dart';
+import 'package:my_flutter_puzzle/screens/puzzle_solo_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: const PuzzleSoloScreen(),
     );
   }
 }
