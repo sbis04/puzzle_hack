@@ -22,7 +22,7 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
   List<List<int>>? _board2D;
   List<int>? myList;
   int _moves = 0;
-  final _puzzleSize = 4;
+  final _puzzleSize = 3;
   final int _animationSpeedInMilliseconds = 300;
   bool _isComputing = false;
   bool _isAutoSolving = false;
