@@ -290,6 +290,18 @@ class PuzzleSolverClient {
     return board1D;
   }
 
+  List<List<int>> convertTo2D(List<int> board1D) {
+    List<List<int>> chunks = [];
+    int chunkSize = size;
+
+    for (var i = 0; i < board1D.length; i += chunkSize) {
+      chunks.add(board1D.sublist(
+          i, i + chunkSize > board1D.length ? board1D.length : i + chunkSize));
+    }
+    
+    return chunks;
+  }
+
   List<List<int>>? runner(List<List<int>> board) {
     // here "h" is "queue"
     final queue = HeapPriorityQueue<Tuple2<int, Node>>(
@@ -298,7 +310,7 @@ class PuzzleSolverClient {
     // visited is taken as set to keep the elements unique
     HashSet<List<int>> visited = HashSet<List<int>>();
 
-    final solver = PuzzleSolverClient(size: size);
+    // final solver = PuzzleSolverClient(size: size);
 
     // List<List<int>> board = solver.createRandomBoard(n: size);
     // while (isSolvable(board) == false) {

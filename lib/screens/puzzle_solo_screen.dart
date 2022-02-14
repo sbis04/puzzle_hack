@@ -77,8 +77,8 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
         _isComputing = true;
       });
 
-      List<List<int>>? boardStates =
-          await compute(_solverClient.runner, _board2D!);
+      List<List<int>>? boardStates = await compute(
+          _solverClient.runner, _solverClient.convertTo2D(myList!));
 
       setState(() {
         _isComputing = false;
