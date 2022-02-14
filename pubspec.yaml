@@ -40,6 +40,9 @@ dependencies:
   cloud_firestore: ^3.1.7
   flutter_riverpod: ^1.0.3
   freezed_annotation: ^1.1.0
+  collection: ^1.15.0
+  tuple: ^2.0.0
+  isolated_worker: ^0.1.0
 
 dev_dependencies:
   flutter_test:
