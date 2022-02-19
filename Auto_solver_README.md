@@ -29,5 +29,29 @@ H is Manhattan distance. It is the estimated distance to goal.
 
 It can be calculated by adding the difference in the row and column for all the blocks of the initial state from the goal state.
 
-Identify the path with the minimum g+h
+Identify the path with the minimum g+h.
+
+
+These are the variables in `puzzle_solver.dart` :
+
+* queue - Priority queue
+* visited - set
+* goal_states - list
+* root - object of Node class
+* board: board
+* previous: null,
+* heuristic: manhattan(board, goalStates[currGoal])
+* depth: int
+
+Functions :
+
+* rowColGoalStates() - Returns the goal states for the slide puzzle
+
+queue is initialised with the first node object, the initial board configuration.
+
+We loop till the queue isnt empty.
+
+Inside the loop, we pop an element from the top.
+
+If it possible to reach the goal state from that configuration
 
