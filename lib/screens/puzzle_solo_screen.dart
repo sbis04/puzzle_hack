@@ -358,7 +358,10 @@ class _PuzzleSoloScreenState extends State<PuzzleSoloScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Row(),
-                MovesText(moves: _moves),
+                MovesText(
+                  moves: _moves,
+                  fontSize: 60,
+                ),
                 SizedBox(
                   height: boardSize,
                   width: boardSize,

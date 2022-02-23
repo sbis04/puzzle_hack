@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class ResponsiveLayout extends StatelessWidget {
@@ -22,7 +24,8 @@ class ResponsiveLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final smallestWidth = MediaQuery.of(context).size.shortestSide;
+    final smallestWidth = MediaQuery.of(context).size.width;
+    log('width: $smallestWidth');
     if (smallestWidth >= largeBreakPoint) {
       return largeChild;
     } else if (smallestWidth >= mediumBreakPoint) {

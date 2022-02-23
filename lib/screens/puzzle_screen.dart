@@ -216,7 +216,11 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
               const PlayerText(
                 displayName: 'PLAYER 1',
               ),
-              MovesText(moves: _moves),
+              // TODO: Change font size
+              MovesText(
+                moves: _moves,
+                fontSize: 60,
+              ),
               Grid(
                 // TODO: Use dynamic size
                 puzzleSize: 4,
@@ -271,7 +275,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                       const PlayerText(
                         displayName: 'PLAYER 2',
                       ),
-                      MovesText(moves: moves ?? _moves),
+                      // TODO: Change font size
+                      MovesText(moves: moves ?? _moves, fontSize: 60),
                       Grid(
                         // TODO: Use dynamic size
                         puzzleSize: 4,
@@ -288,7 +293,8 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
                     const PlayerText(
                       displayName: 'PLAYER 2',
                     ),
-                    MovesText(moves: _moves),
+                    // TODO: Change font size
+                    MovesText(moves: _moves, fontSize: 60,),
                     Grid(
                       // TODO: Use dynamic size
                       puzzleSize: 4,
