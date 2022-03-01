@@ -83,9 +83,11 @@ class Node {
 }
 
 class PuzzleSolverClient {
-  final int size;
+  int size;
 
-  PuzzleSolverClient({required this.size});
+  PuzzleSolverClient({this.size = 3});
+
+  set setSize(int newSize) => size = newSize;
 
   List<List<int>> createRandomBoard({bool solvable = true}) {
     List<List<int>> board = [];
@@ -298,7 +300,7 @@ class PuzzleSolverClient {
       chunks.add(board1D.sublist(
           i, i + chunkSize > board1D.length ? board1D.length : i + chunkSize));
     }
-    
+
     return chunks;
   }
 

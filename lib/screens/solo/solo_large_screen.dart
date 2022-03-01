@@ -422,19 +422,30 @@ class _SoloLargeScreenState extends State<SoloLargeScreen> {
                       const TextSpan(text: ' Tiles'),
                     ],
                   ),
-                )
-                // Text(
-                //   '$_moves Moves',
-                //   style: TextStyle(
-                //     fontSize: 24,
-                //     fontWeight: FontWeight.w500,
-                //     color: Colors.white,
-                //   ),
-                // ),
-                // MovesText(
-                //   moves: _moves,
-                //   fontSize: fontSize,
-                // ),
+                ),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: 145,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 13.0, bottom: 12.0),
+                      child: Text(
+                        'Start Game',
+                        // 'Restart',
+                        // 'Get ready...',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

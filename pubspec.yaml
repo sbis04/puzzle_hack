@@ -44,6 +44,7 @@ dependencies:
   tuple: ^2.0.0
   isolated_worker: ^0.1.0
   rive: ^0.8.1
+  animated_text_kit: ^4.2.1
 
 dev_dependencies:
   flutter_test:

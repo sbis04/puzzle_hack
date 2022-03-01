@@ -1,16 +1,38 @@
 import 'dart:developer';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/utils/responsive_layout.dart';
 import 'package:rive/rive.dart';
 
-import '../../application/states/puzzle_state.dart';
 import '../../models/puzzle_data.dart';
+
+extension ColorBrightness on Color {
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+
+    return hslDark.toColor();
+  }
+
+  Color lighten([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+
+    final hsl = HSLColor.fromColor(this);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+
+    return hslLight.toColor();
+  }
+}
 
 class SoloScreen extends ConsumerStatefulWidget {
   const SoloScreen({Key? key}) : super(key: key);
@@ -23,41 +45,26 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
   late final PuzzleSolverClient _solverClient;
   late RiveAnimationController _riveController;
   final int _puzzleSize = 3;
-  late PuzzleData _currentPuzzleData;
+  late final PuzzleData _initialPuzzleData;
 
   @override
   void initState() {
     _riveController = SimpleAnimation('idle');
     _solverClient = PuzzleSolverClient(size: _puzzleSize);
-    _currentPuzzleData = generateInitialPuzzle();
+    _initialPuzzleData = ref
+        .read(puzzleNotifierProvider(_solverClient).notifier)
+        .generateInitialPuzzle();
 
     super.initState();
   }
 
-  generateInitialPuzzle() {
-    List<int> solvedList = [];
-    var _puzzleSize = _solverClient.size;
-    for (int i = 1; i < _puzzleSize * _puzzleSize; i++) {
-      solvedList.add(i);
-    }
-    solvedList.add(0);
-    final initialOffsetMap =
-        ref.read(puzzleNotifierProvider.notifier).createOffset(solvedList);
-
-    final initialPuzzleData = PuzzleData(
-      board2D: [],
-      board1D: solvedList,
-      offsetMap: initialOffsetMap,
-      moves: 0,
-      tiles: 0,
-      puzzleSize: _puzzleSize,
-    );
-
-    return initialPuzzleData;
-  }
-
   @override
   Widget build(BuildContext context) {
+    ref.listen(puzzleNotifierProvider(_solverClient),
+        (previous, PuzzleState next) {
+      if (next is PuzzleSolved) {}
+    });
+
     var screenSize = MediaQuery.of(context).size;
 
     var shortestSide = screenSize.shortestSide;
@@ -67,29 +74,15 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
     var spacing = 5;
     var eachBoxSize = (boardSize / _puzzleSize) - (spacing * (_puzzleSize - 1));
 
-    ref.listen(puzzleNotifierProvider,
-        (PuzzleState? previous, PuzzleState next) {
-      next.when(
-        () => null,
-        initializing: () => null,
-        current: (puzzleData) => _currentPuzzleData = puzzleData,
-        computingSolution: (puzzleData) => _currentPuzzleData = puzzleData,
-        autoSolving: (puzzleData) => _currentPuzzleData = puzzleData,
-        solved: (puzzleData) => _currentPuzzleData = puzzleData,
-        error: (message) => null,
-      );
-      setState(() {});
-    });
-
     return ResponsiveLayout(
       largeChild: Scaffold(
-        backgroundColor: Colors.black,
-        appBar: PreferredSize(
-          child: Container(
-            color: Colors.black,
-          ),
-          preferredSize: Size(double.maxFinite, shortestSide * 0.1),
-        ),
+        backgroundColor: Palette.blue.darken(0.3),
+        // appBar: PreferredSize(
+        //   child: Container(
+        //     color: Palette.blue.darken(0.3),
+        //   ),
+        //   preferredSize: Size(double.maxFinite, shortestSide * 0.1),
+        // ),
         body: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -128,7 +121,8 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                   const SizedBox(height: 32),
                   Consumer(
                     builder: (context, ref, child) {
-                      final state = ref.watch(puzzleNotifierProvider);
+                      final state =
+                          ref.watch(puzzleNotifierProvider(_solverClient));
 
                       return state.when(
                         () => const MovesTilesText(
@@ -136,6 +130,10 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                           tiles: 0,
                         ),
                         initializing: () => const MovesTilesText(
+                          moves: 0,
+                          tiles: 0,
+                        ),
+                        scrambling: (_) => const MovesTilesText(
                           moves: 0,
                           tiles: 0,
                         ),
@@ -163,58 +161,94 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                     },
                   ),
                   const SizedBox(height: 32),
-                  SizedBox(
-                    width: 145,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Palette.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final state =
+                          ref.watch(puzzleNotifierProvider(_solverClient));
+
+                      return state.when(
+                        () => PuzzleGameButton(
+                          text: 'Start Game',
+                          onTap: () => ref
+                              .read(puzzleNotifierProvider(_solverClient)
+                                  .notifier)
+                              .initializePuzzle(
+                                initialPuzzleData: _initialPuzzleData,
+                              ),
                         ),
-                      ),
-                      onPressed: () => ref
-                          .read(puzzleNotifierProvider.notifier)
-                          .initializePuzzle(
-                            puzzleSize: _puzzleSize,
-                          ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 13.0, bottom: 12.0),
-                        child: Text(
-                          'Start Game',
-                          // 'Restart',
-                          // 'Get ready...',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
+                        initializing: () => const PuzzleGameButton(
+                          text: 'Get ready...',
+                          onTap: null,
                         ),
-                      ),
-                    ),
+                        scrambling: (_) => const PuzzleGameButton(
+                          text: 'Get ready...',
+                          onTap: null,
+                        ),
+                        current: (puzzleData) => PuzzleGameButton(
+                          text: 'Restart',
+                          onTap: () => ref
+                              .read(puzzleNotifierProvider(_solverClient)
+                                  .notifier)
+                              .restartPuzzle(),
+                        ),
+                        computingSolution: (puzzleData) =>
+                            const PuzzleGameButton(
+                          text: 'Processing...',
+                          onTap: null,
+                        ),
+                        autoSolving: (puzzleData) => const PuzzleGameButton(
+                          text: 'Solving...',
+                          onTap: null,
+                        ),
+                        solved: (puzzleData) => PuzzleGameButton(
+                          text: 'Start Game',
+                          onTap: () => ref
+                              .read(puzzleNotifierProvider(_solverClient)
+                                  .notifier)
+                              .initializePuzzle(
+                                initialPuzzleData: puzzleData,
+                              ),
+                        ),
+                        error: (_) => PuzzleGameButton(
+                          text: 'Start Game',
+                          onTap: () => ref
+                              .read(puzzleNotifierProvider(_solverClient)
+                                  .notifier)
+                              .initializePuzzle(
+                                initialPuzzleData: _initialPuzzleData,
+                              ),
+                        ),
+                      );
+                    },
                   ),
-                  SizedBox(
-                    width: 145,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Palette.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () => ref
-                          .read(puzzleNotifierProvider.notifier).scrambleBoard(_currentPuzzleData),
-                          
-                      child: const Padding(
-                        padding: EdgeInsets.only(top: 13.0, bottom: 12.0),
-                        child: Text(
-                          'Shuffle',
-                          // 'Restart',
-                          // 'Get ready...',
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  // StartGameButton(
+                  //   initialPuzzleData: _initialPuzzleData,
+                  // ),
+                  // SizedBox(
+                  //   width: 145,
+                  //   child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       primary: Palette.blue,
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //       ),
+                  //     ),
+                  //     onPressed: () => ref
+                  //         .read(puzzleNotifierProvider.notifier)
+                  //         .scrambleBoard(_initialPuzzleData),
+                  //     child: const Padding(
+                  //       padding: EdgeInsets.only(top: 13.0, bottom: 12.0),
+                  //       child: Text(
+                  //         'Shuffle',
+                  //         // 'Restart',
+                  //         // 'Get ready...',
+                  //         style: TextStyle(
+                  //           fontSize: 16,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -240,12 +274,77 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                     )
                   ],
                 ),
-                PuzzleWidget(
-                  boardSize: boardSize,
-                  eachBoxSize: eachBoxSize,
-                  puzzleData: _currentPuzzleData,
-                  fontSize: fontSize,
-                  isEnabled: true,
+                Consumer(
+                  builder: (context, ref, child) {
+                    final state =
+                        ref.watch(puzzleNotifierProvider(_solverClient));
+
+                    return state.when(
+                      () => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: _initialPuzzleData,
+                        fontSize: fontSize,
+                        isEnabled: false,
+                        animationSpeed: 500,
+                      ),
+                      initializing: () => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: _initialPuzzleData,
+                        fontSize: fontSize,
+                        isEnabled: false,
+                        animationSpeed: 500,
+                      ),
+                      scrambling: (puzzleData) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: puzzleData,
+                        fontSize: fontSize,
+                        isEnabled: false,
+                        animationSpeed: 500,
+                      ),
+                      current: (puzzleData) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: puzzleData,
+                        fontSize: fontSize,
+                      ),
+                      computingSolution: (puzzleData) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: puzzleData,
+                        fontSize: fontSize,
+                      ),
+                      autoSolving: (puzzleData) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: puzzleData,
+                        fontSize: fontSize,
+                      ),
+                      solved: (puzzleData) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: puzzleData,
+                        fontSize: fontSize,
+                        isEnabled: false,
+                      ),
+                      error: (_) => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        puzzleData: _initialPuzzleData,
+                        fontSize: fontSize,
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 30),
                 // Row(
@@ -330,22 +429,50 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                 // ),
               ],
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 56.0, bottom: 56),
-                child: SizedBox(
-                  width: boardSize * 0.75,
-                  height: boardSize * 0.75,
-                  child: RiveAnimation.asset(
-                    'assets/rive/dash.riv',
-                    fit: BoxFit.contain,
-                    antialiasing: true,
-                    controllers: [_riveController],
-                    onInit: (_) => setState(() {}),
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                const Spacer(),
+                SizedBox(
+                  width: 250.0,
+                  child: DefaultTextStyle(
+                    style: const TextStyle(
+                      fontSize: 100.0,
+                      fontFamily: 'Canterbury',
+                    ),
+                    child: AnimatedTextKit(
+                      totalRepeatCount: 1,
+                      animatedTexts: [
+                        RotateAnimatedText('3'),
+                        RotateAnimatedText('2'),
+                        RotateAnimatedText('1'),
+                        RotateAnimatedText('GO!'),
+                      ],
+                      onTap: () {
+                        print("Tap Event");
+                      },
+                    ),
                   ),
                 ),
-              ),
+                const Spacer(),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 56.0, bottom: 56),
+                    child: SizedBox(
+                      width: boardSize * 0.75,
+                      height: boardSize * 0.75,
+                      child: RiveAnimation.asset(
+                        'assets/rive/dash.riv',
+                        fit: BoxFit.contain,
+                        antialiasing: true,
+                        controllers: [_riveController],
+                        onInit: (_) => setState(() {}),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             // SizedBox(),
           ],
@@ -353,6 +480,64 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
       ),
       mediumChild: Scaffold(),
       smallChild: Scaffold(),
+    );
+  }
+}
+
+class PuzzleGameButton extends ConsumerWidget {
+  const PuzzleGameButton({
+    Key? key,
+    required this.text,
+    required this.onTap,
+  }) : super(key: key);
+
+  final String text;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SizedBox(
+      width: 145,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          ),
+          backgroundColor: MaterialStateProperty.resolveWith<Color>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+              } else if (states.contains(MaterialState.disabled)) {
+                return Palette.blue.withOpacity(0.5);
+              }
+
+              return Palette.blue; // Use the component's default.
+            },
+          ),
+        ),
+        // style: ElevatedButton.styleFrom(
+        //   onPrimary: Palette.blue,
+        //   onSurface: Palette.blue,
+        //   primary: Palette.blue,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(30),
+        //   ),
+        // ),
+        onPressed: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 13.0, bottom: 12.0),
+          child: Text(
+            text,
+            // 'Start Game',
+            // 'Restart',
+            // 'Get ready...',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white.withOpacity(onTap == null ? 0.6 : 1),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -400,24 +585,27 @@ class MovesTilesText extends StatelessWidget {
 class PuzzleWidget extends ConsumerWidget {
   const PuzzleWidget({
     Key? key,
+    required this.solverClient,
     required this.boardSize,
     required this.eachBoxSize,
     required this.puzzleData,
     required this.fontSize,
+    this.animationSpeed = 300,
     this.isEnabled = true,
   }) : super(key: key);
 
+  final PuzzleSolverClient solverClient;
   final double boardSize;
   final double eachBoxSize;
   final double fontSize;
   final PuzzleData puzzleData;
   final bool isEnabled;
+  final int animationSpeed;
 
-  final int _animationSpeedInMilliseconds = 300;
+  // final int _animationSpeedInMilliseconds = 300;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('CURRENT OFFSET: ${puzzleData.offsetMap}');
     return SizedBox(
       height: boardSize,
       width: boardSize,
@@ -428,9 +616,9 @@ class PuzzleWidget extends ConsumerWidget {
                 ? AnimatedAlign(
                     alignment: puzzleData.offsetMap.entries.toList()[i].value,
                     duration: Duration(
-                      milliseconds: _animationSpeedInMilliseconds,
+                      milliseconds: animationSpeed,
                     ),
-                    curve: Curves.easeInOut,
+                    curve: Curves.easeOut,
                     child: MouseRegion(
                       cursor: !isEnabled
                           ? SystemMouseCursors.forbidden
@@ -439,7 +627,8 @@ class PuzzleWidget extends ConsumerWidget {
                         onTap: !isEnabled
                             ? null
                             : () => ref
-                                .read(puzzleNotifierProvider.notifier)
+                                .read(puzzleNotifierProvider(solverClient)
+                                    .notifier)
                                 .onClick(
                                   index: puzzleData.board1D.indexOf(puzzleData
                                       .offsetMap.entries
@@ -447,12 +636,9 @@ class PuzzleWidget extends ConsumerWidget {
                                       .key),
                                   prev: puzzleData,
                                 ),
-
-                        // onClick(
-                        //     list.indexOf(offsetMap.entries.toList()[i].key)),
                         child: Card(
                           elevation: 4,
-                          color: Palette.blue.withOpacity(!isEnabled ? 0.5 : 1),
+                          color: Palette.blue.withOpacity(isEnabled ? 1 : 0.5),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -468,7 +654,8 @@ class PuzzleWidget extends ConsumerWidget {
                                 style: TextStyle(
                                   fontSize: fontSize,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Colors.white
+                                      .withOpacity(isEnabled ? 1 : 0.5),
                                 ),
                               ),
                             ),
@@ -483,112 +670,3 @@ class PuzzleWidget extends ConsumerWidget {
     );
   }
 }
-
-// class PuzzleWidget extends ConsumerStatefulWidget {
-//   const PuzzleWidget({
-//     Key? key,
-//     required this.boardSize,
-//     required this.eachBoxSize,
-//     required this.puzzleData,
-//     required this.fontSize,
-//     this.isEnabled = true,
-//   }) : super(key: key);
-
-//   final double boardSize;
-//   final double eachBoxSize;
-//   final double fontSize;
-//   final PuzzleData puzzleData;
-//   final bool isEnabled;
-
-//   @override
-//   ConsumerState<ConsumerStatefulWidget> createState() => _PuzzleWidgetState();
-// }
-
-// class _PuzzleWidgetState extends ConsumerState<PuzzleWidget> {
-//   final int _animationSpeedInMilliseconds = 300;
-//   late final double boardSize;
-//   late final double eachBoxSize;
-//   late final double fontSize;
-//   late final PuzzleData puzzleData;
-//   late final Map<int, FractionalOffset> offsetMap;
-//   late final List<int> list;
-
-//   @override
-//   void initState() {
-//     puzzleData = widget.puzzleData;
-//     boardSize = widget.boardSize;
-//     eachBoxSize = widget.eachBoxSize;
-//     fontSize = widget.fontSize;
-//     offsetMap = puzzleData.offsetMap;
-
-//     // print('CURRENT OFFSET: $offsetMap');
-//     list = puzzleData.board1D;
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(
-//     BuildContext context,
-//   ) {
-//     print('CURRENT OFFSET: $offsetMap');
-//     return SizedBox(
-//       height: boardSize,
-//       width: boardSize,
-//       child: Stack(
-//         children: [
-//           for (int i = 0; i < offsetMap.length; i++)
-//             offsetMap.entries.toList()[i].key != 0
-//                 ? AnimatedAlign(
-//                     alignment: offsetMap.entries.toList()[i].value,
-//                     duration: Duration(
-//                       milliseconds: _animationSpeedInMilliseconds,
-//                     ),
-//                     curve: Curves.easeInOut,
-//                     child: MouseRegion(
-//                       cursor: !widget.isEnabled
-//                           ? SystemMouseCursors.forbidden
-//                           : SystemMouseCursors.click,
-//                       child: GestureDetector(
-//                         onTap: !widget.isEnabled
-//                             ? null
-//                             : () => ref
-//                                 .read(puzzleNotifierProvider.notifier)
-//                                 .onClick(
-//                                   index: list.indexOf(
-//                                       offsetMap.entries.toList()[i].key),
-//                                   prev: puzzleData,
-//                                 ),
-
-//                         // onClick(
-//                         //     list.indexOf(offsetMap.entries.toList()[i].key)),
-//                         child: Card(
-//                           elevation: 4,
-//                           color: Palette.blue
-//                               .withOpacity(!widget.isEnabled ? 0.5 : 1),
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(20),
-//                           ),
-//                           child: SizedBox(
-//                             height: eachBoxSize,
-//                             width: eachBoxSize,
-//                             child: Center(
-//                               child: Text(
-//                                 offsetMap.entries.toList()[i].key.toString(),
-//                                 style: TextStyle(
-//                                   fontSize: fontSize,
-//                                   fontWeight: FontWeight.bold,
-//                                   color: Colors.white,
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   )
-//                 : const SizedBox(),
-//         ],
-//       ),
-//     );
-//   }
-// }
