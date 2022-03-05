@@ -71,7 +71,7 @@ class PuzzleNotifier extends StateNotifier<PuzzleState> {
     generateSolvedList();
 
     int start = 0;
-    const period = Duration(milliseconds: 1000);
+    const period = Duration(milliseconds: 1200);
     PuzzleData currentPuzzleData = initialPuzzleData;
     currentPuzzleData = scrambleBoard(currentPuzzleData);
 
@@ -80,7 +80,7 @@ class PuzzleNotifier extends StateNotifier<PuzzleState> {
       start++;
       if (start == 2) {
         timer.cancel();
-        await Future.delayed(const Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 1000));
         state = PuzzleState.current(currentPuzzleData);
       }
     });
