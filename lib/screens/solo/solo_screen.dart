@@ -45,7 +45,9 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
   late final PuzzleSolverClient _solverClient;
   late RiveAnimationController _riveController;
   final int _puzzleSize = 3;
+  final int _kInitialSpeed = 1000;
   late final PuzzleData _initialPuzzleData;
+  bool _isStartPressed = false;
 
   @override
   void initState() {
@@ -63,6 +65,11 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
       if (next is PuzzleSolved) {}
+      if (next is PuzzleInitializing) {
+        setState(() {
+          _isStartPressed = true;
+        });
+      }
     });
 
     var screenSize = MediaQuery.of(context).size;
@@ -287,7 +294,7 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                         puzzleData: _initialPuzzleData,
                         fontSize: fontSize,
                         isEnabled: false,
-                        animationSpeed: 500,
+                        animationSpeed: _kInitialSpeed,
                       ),
                       initializing: () => PuzzleWidget(
                         solverClient: _solverClient,
@@ -296,7 +303,7 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                         puzzleData: _initialPuzzleData,
                         fontSize: fontSize,
                         isEnabled: false,
-                        animationSpeed: 500,
+                        animationSpeed: _kInitialSpeed,
                       ),
                       scrambling: (puzzleData) => PuzzleWidget(
                         solverClient: _solverClient,
@@ -305,7 +312,7 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                         puzzleData: puzzleData,
                         fontSize: fontSize,
                         isEnabled: false,
-                        animationSpeed: 500,
+                        animationSpeed: _kInitialSpeed,
                       ),
                       current: (puzzleData) => PuzzleWidget(
                         solverClient: _solverClient,
@@ -433,24 +440,49 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 const Spacer(),
-                SizedBox(
-                  width: 250.0,
-                  child: DefaultTextStyle(
-                    style: const TextStyle(
-                      fontSize: 100.0,
-                      fontFamily: 'Canterbury',
-                    ),
-                    child: AnimatedTextKit(
-                      totalRepeatCount: 1,
-                      animatedTexts: [
-                        RotateAnimatedText('3'),
-                        RotateAnimatedText('2'),
-                        RotateAnimatedText('1'),
-                        RotateAnimatedText('GO!'),
-                      ],
-                      onTap: () {
-                        print("Tap Event");
-                      },
+                Visibility(
+                  visible: _isStartPressed,
+                  child: SizedBox(
+                    width: 250.0,
+                    child: DefaultTextStyle(
+                      style: const TextStyle(
+                        fontSize: 150.0,
+                        fontFamily: 'GoogleSans',
+                      ),
+                      child: AnimatedTextKit(
+                        // totalRepeatCount: 1,
+                        isRepeatingAnimation: false,
+                        pause: const Duration(milliseconds: 0),
+                        onFinished: () {
+                          setState(() {
+                            _isStartPressed = false;
+                          });
+                        },
+                        animatedTexts: [
+                          RotateAnimatedText(
+                            '3',
+                            duration: Duration(milliseconds: _kInitialSpeed),
+                          ),
+                          RotateAnimatedText(
+                            '2',
+                            duration: Duration(milliseconds: _kInitialSpeed),
+                          ),
+                          RotateAnimatedText(
+                            '1',
+                            duration: Duration(milliseconds: _kInitialSpeed),
+                          ),
+                          RotateAnimatedText(
+                            'GO!',
+                            textStyle: const TextStyle(
+                              fontSize: 120.0,
+                            ),
+                            duration: Duration(milliseconds: _kInitialSpeed),
+                          ),
+                        ],
+                        onTap: () {
+                          print("Tap Event");
+                        },
+                      ),
                     ),
                   ),
                 ),
