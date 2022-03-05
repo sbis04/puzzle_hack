@@ -461,14 +461,17 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                         animatedTexts: [
                           RotateAnimatedText(
                             '3',
+                            transitionHeight: 100 * 2.5,
                             duration: Duration(milliseconds: _kInitialSpeed),
                           ),
                           RotateAnimatedText(
                             '2',
+                            transitionHeight: 100 * 2.5,
                             duration: Duration(milliseconds: _kInitialSpeed),
                           ),
                           RotateAnimatedText(
                             '1',
+                            transitionHeight: 100 * 2.5,
                             duration: Duration(milliseconds: _kInitialSpeed),
                           ),
                           RotateAnimatedText(
@@ -476,6 +479,7 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                             textStyle: const TextStyle(
                               fontSize: 120.0,
                             ),
+                            transitionHeight: 120 * 2.5,
                             duration: Duration(milliseconds: _kInitialSpeed),
                           ),
                         ],
