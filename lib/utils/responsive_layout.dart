@@ -9,7 +9,7 @@ class ResponsiveLayout extends StatelessWidget {
     this.mediumChild,
     this.smallChild,
     this.largeBreakPoint = 1200.0,
-    this.mediumBreakPoint = 800.0,
+    this.mediumBreakPoint = 580.0,
   }) : super(key: key);
 
   final Widget largeChild;

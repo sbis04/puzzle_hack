@@ -62,11 +62,8 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
       }
     });
 
-    var screenSize = MediaQuery.of(context).size;
-
-    var shortestSide = screenSize.shortestSide;
-    var fontSize = shortestSide * 0.08;
-    var boardSize = shortestSide * 0.45;
+    var fontSize = 70.0;
+    var boardSize = 450.0;
 
     var spacing = 5;
     var eachBoxSize = (boardSize / _puzzleSize) - (spacing * (_puzzleSize - 1));
@@ -77,7 +74,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
       //   child: Container(
       //     color: Palette.blue.darken(0.3),
       //   ),
-      //   preferredSize: Size(double.maxFinite, shortestSide * 0.1),
+      //   preferredSize: Size(double.maxFinite, 50),
       // ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,20 +121,25 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
               ],
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const TimerWidget(),
-              PuzzleWidget(
-                solverClient: _solverClient,
-                boardSize: boardSize,
-                eachBoxSize: eachBoxSize,
-                initialPuzzleData: _initialPuzzleData,
-                fontSize: fontSize,
-                kInitialSpeed: kInitialSpeed,
-              ),
-              const SizedBox(height: 30),
-            ],
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const TimerWidget(
+                  fontSize: 40,
+                ),
+                const SizedBox(height: 36),
+                PuzzleWidget(
+                  solverClient: _solverClient,
+                  boardSize: boardSize,
+                  eachBoxSize: eachBoxSize,
+                  initialPuzzleData: _initialPuzzleData,
+                  fontSize: fontSize,
+                  kInitialSpeed: kInitialSpeed,
+                ),
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
           Column(
             mainAxisSize: MainAxisSize.max,

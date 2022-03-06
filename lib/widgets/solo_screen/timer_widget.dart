@@ -5,7 +5,10 @@ import 'package:my_flutter_puzzle/providers.dart';
 class TimerWidget extends StatelessWidget {
   const TimerWidget({
     Key? key,
+    required this.fontSize,
   }) : super(key: key);
+
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +21,8 @@ class TimerWidget extends StatelessWidget {
 
             return Text(
               state,
-              style: const TextStyle(
-                fontSize: 40,
+              style: TextStyle(
+                fontSize: fontSize,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -27,10 +30,10 @@ class TimerWidget extends StatelessWidget {
           },
         ),
         const SizedBox(width: 8),
-        const Icon(
+        Icon(
           Icons.timer,
           color: Colors.white,
-          size: 40,
+          size: fontSize,
         )
       ],
     );

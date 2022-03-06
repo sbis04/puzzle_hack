@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/models/puzzle_data.dart';
 import 'package:my_flutter_puzzle/providers.dart';
-import 'package:my_flutter_puzzle/screens/solo/solo_screen.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
+
+import 'game_button_widget/puzzle_game_button.dart';
 
 class GameButtonWidget extends StatelessWidget {
   const GameButtonWidget({
