@@ -1,13 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_flutter_puzzle/screens/login_screen.dart';
-import 'package:my_flutter_puzzle/screens/puzzle_screen.dart';
-import 'package:my_flutter_puzzle/screens/puzzle_solo_screen.dart';
-import 'package:my_flutter_puzzle/screens/solo/solo_large_screen.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen.dart';
-import 'package:my_flutter_puzzle/utils/responsive_layout.dart';
-import 'package:my_flutter_puzzle/widgets/puzzle_widgets/timer_test_screen.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
@@ -41,11 +35,6 @@ class MyApp extends StatelessWidget {
       ),
       // home: const LoginScreen(),
       // home: const TimerTestScreen(),
-      // home: const ResponsiveLayout(
-      //   largeChild: SoloLargeScreen(),
-      //   mediumChild: Scaffold(),
-      //   smallChild: Scaffold(),
-      // ),
       home: const SoloScreen(),
     );
   }
