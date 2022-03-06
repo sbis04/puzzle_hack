@@ -33,6 +33,7 @@ class CountdownOverlay extends ConsumerWidget {
                 child: DefaultTextStyle(
                   style: const TextStyle(
                     fontSize: 150.0,
+                    color: Colors.white,
                     fontFamily: 'GoogleSans',
                   ),
                   child: AnimatedTextKit(
