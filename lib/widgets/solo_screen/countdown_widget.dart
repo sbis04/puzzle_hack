@@ -38,22 +38,32 @@ class CountdownWidget extends ConsumerWidget {
               RotateAnimatedText(
                 '3',
                 transitionHeight: 100 * 2.5,
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                ),
                 duration: Duration(milliseconds: _kInitialSpeed),
               ),
               RotateAnimatedText(
                 '2',
                 transitionHeight: 100 * 2.5,
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                ),
                 duration: Duration(milliseconds: _kInitialSpeed),
               ),
               RotateAnimatedText(
                 '1',
                 transitionHeight: 100 * 2.5,
+                textStyle: const TextStyle(
+                  color: Colors.white,
+                ),
                 duration: Duration(milliseconds: _kInitialSpeed),
               ),
               RotateAnimatedText(
                 'GO!',
                 textStyle: const TextStyle(
                   fontSize: 120.0,
+                  color: Colors.white,
                 ),
                 transitionHeight: 120 * 2.5,
                 duration: Duration(milliseconds: _kInitialSpeed),
