@@ -64,7 +64,9 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
   Widget build(BuildContext context) {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
-      if (next is PuzzleSolved) {}
+      if (next is PuzzleSolved) {
+        ref.read(timerNotifierProvider.notifier).stopTimer();
+      }
       if (next is PuzzleInitializing) {
         setState(() {
           _isStartPressed = true;
@@ -192,12 +194,14 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                           onTap: null,
                         ),
                         current: (puzzleData) => PuzzleGameButton(
-                          text: 'Restart',
-                          onTap: () => ref
-                              .read(puzzleNotifierProvider(_solverClient)
-                                  .notifier)
-                              .restartPuzzle(),
-                        ),
+                            text: 'Restart',
+                            onTap: () {
+                              ref.read(timerNotifierProvider.notifier).stopTimer();
+                              ref
+                                  .read(puzzleNotifierProvider(_solverClient)
+                                      .notifier)
+                                  .restartPuzzle();
+                            }),
                         computingSolution: (puzzleData) =>
                             const PuzzleGameButton(
                           text: 'Processing...',
@@ -264,17 +268,33 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
               children: [
                 Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Text(
-                      '00:00:00',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                  children: [
+                    Consumer(
+                      builder: (context, ref, child) {
+                        final state = ref.watch(timerNotifierProvider);
+
+                        // return Text(state);
+                        return Text(
+                          // '00:00:00',
+                          state,
+                          style: const TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        );
+                      },
                     ),
-                    SizedBox(width: 8),
-                    Icon(
+                    // Text(
+                    //   '00:00:00',
+                    //   style: TextStyle(
+                    //     fontSize: 40,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colors.white,
+                    //   ),
+                    // ),
+                    const SizedBox(width: 8),
+                    const Icon(
                       Icons.timer,
                       color: Colors.white,
                       size: 40,
@@ -454,6 +474,7 @@ class _SoloScreenState extends ConsumerState<SoloScreen> {
                         isRepeatingAnimation: false,
                         pause: const Duration(milliseconds: 0),
                         onFinished: () {
+                          ref.read(timerNotifierProvider.notifier).startTimer();
                           setState(() {
                             _isStartPressed = false;
                           });
