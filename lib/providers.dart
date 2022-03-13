@@ -1,9 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_puzzle/application/notifiers/image_splitter_notifier.dart';
 import 'package:my_flutter_puzzle/application/notifiers/player_matching_notifier.dart';
 import 'package:my_flutter_puzzle/application/notifiers/puzzle_notifier.dart';
+import 'package:my_flutter_puzzle/application/notifiers/puzzle_type_notifier.dart';
+import 'package:my_flutter_puzzle/application/states/image_splitter_state.dart';
 import 'package:my_flutter_puzzle/application/states/player_matching_state.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/utils/database_client.dart';
+import 'package:my_flutter_puzzle/utils/image_splitter.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 
 import 'application/notifiers/anonymous_auth_notifier.dart';
@@ -17,6 +21,10 @@ final authenticationClientProvider = Provider<AuthenticationClient>(
 
 final databaseClientProvider = Provider<DatabaseClient>(
   (ref) => DatabaseClient(),
+);
+
+final imageSplitterProvider = Provider<ImageSplitter>(
+  (ref) => ImageSplitter(),
 );
 
 // final solverClientProvider = Provider<PuzzleSolverClient>(
@@ -41,8 +49,20 @@ final puzzleNotifierProvider = StateNotifierProvider.family<PuzzleNotifier,
   (ref, solverClient) => PuzzleNotifier(solverClient),
 );
 
+final imageSplitterNotifierProvider =
+    StateNotifierProvider<ImageSplitterNotifier, ImageSplitterState>(
+  (ref) => ImageSplitterNotifier(
+    ref.watch(imageSplitterProvider),
+  ),
+);
+
 final timerNotifierProvider = StateNotifierProvider<TimerNotifier, String>(
   ((ref) => TimerNotifier()),
+);
+
+final puzzleTypeNotifierProvider =
+    StateNotifierProvider<PuzzleTypeNotifier, PuzzleType>(
+  (ref) => PuzzleTypeNotifier(),
 );
 
 // EXAMPLE of StateProvider
