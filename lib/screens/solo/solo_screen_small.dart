@@ -56,7 +56,9 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
   Widget build(BuildContext context) {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
-      if (next is PuzzleSolved) {}
+      if (next is PuzzleSolved) {
+        // TODO: Add celebration
+      }
       if (next is PuzzleInitializing) {
         setState(() {
           _isStartPressed = true;
@@ -121,15 +123,18 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
                     const Text(
                       'Puzzle Challenge',
                       style: TextStyle(
-                        fontSize: 36,
+                        fontSize: 32,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    MovesTilesWidget(solverClient: _solverClient),
+                    MovesTilesWidget(
+                      solverClient: _solverClient,
+                      fontSize: 22,
+                    ),
                     const SizedBox(height: 16),
-                    const TimerWidget(fontSize: 28),
+                    const TimerWidget(fontSize: 24),
                     const SizedBox(height: 36),
                     PuzzleWidget(
                       solverClient: _solverClient,

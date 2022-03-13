@@ -55,7 +55,9 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenMedium> {
   Widget build(BuildContext context) {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
-      if (next is PuzzleSolved) {}
+      if (next is PuzzleSolved) {
+        // TODO: Add celebration
+      }
       if (next is PuzzleInitializing) {
         setState(() {
           _isStartPressed = true;

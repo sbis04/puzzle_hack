@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
+import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/widgets/solo_screen/solo_screen_export.dart';
@@ -54,7 +56,9 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
   Widget build(BuildContext context) {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
-      if (next is PuzzleSolved) {}
+      if (next is PuzzleSolved) {
+        // TODO: Add celebration
+      }
       if (next is PuzzleInitializing) {
         setState(() {
           _isStartPressed = true;
@@ -69,13 +73,16 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
     var eachBoxSize = (boardSize / _puzzleSize) - (spacing * (_puzzleSize - 1));
 
     return Scaffold(
-      backgroundColor: Palette.blue.darken(0.3),
-      // appBar: PreferredSize(
-      //   child: Container(
-      //     color: Palette.blue.darken(0.3),
-      //   ),
-      //   preferredSize: Size(double.maxFinite, 50),
-      // ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      // backgroundColor: Palette.blue.darken(0.3),
+      appBar: PreferredSize(
+        child: TopBarLarge(
+          puzzleSize: _puzzleSize,
+          puzzleType: _puzzleType,
+          color: Theme.of(context).backgroundColor,
+        ),
+        preferredSize: const Size(double.maxFinite, 100),
+      ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -157,7 +164,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
               ),
               const Spacer(),
               AnimatedDash(
-                boardSize: boardSize,
+                boardSize: boardSize * 0.8,
                 riveController: _riveController,
                 onInit: (_) => setState(() {}),
               ),
