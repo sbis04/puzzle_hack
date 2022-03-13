@@ -7,6 +7,7 @@ import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/screens/photo/photo_screen_large.dart';
 import 'package:my_flutter_puzzle/screens/photo/photo_screen_medium.dart';
+import 'package:my_flutter_puzzle/screens/photo/photo_screen_small.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/utils/responsive_layout.dart';
@@ -106,7 +107,7 @@ class _PhotoScreenState extends ConsumerState<PhotoScreen> {
                 puzzleType: _puzzleType,
                 riveController: _riveController,
               ),
-              smallChild: PhotoScreenLarge(
+              smallChild: PhotoScreenSmall(
                 solverClient: _solverClient,
                 initialPuzzleData: _initialPuzzleData,
                 puzzleSize: _puzzleSize,
@@ -149,7 +150,7 @@ class _PhotoScreenState extends ConsumerState<PhotoScreen> {
                   puzzleType: _puzzleType,
                   riveController: _riveController,
                 ),
-                smallChild: PhotoScreenLarge(
+                smallChild: PhotoScreenSmall(
                   solverClient: _solverClient,
                   initialPuzzleData: _initialPuzzleData,
                   puzzleSize: _puzzleSize,
@@ -176,7 +177,7 @@ class _PhotoScreenState extends ConsumerState<PhotoScreen> {
                 puzzleType: _puzzleType,
                 riveController: _riveController,
               ),
-              smallChild: PhotoScreenLarge(
+              smallChild: PhotoScreenSmall(
                 solverClient: _solverClient,
                 initialPuzzleData: _initialPuzzleData,
                 puzzleSize: _puzzleSize,

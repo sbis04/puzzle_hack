@@ -6,15 +6,19 @@ class PickImageButton extends ConsumerWidget {
     Key? key,
     required this.text,
     required this.onTap,
+    this.padding = const EdgeInsets.only(top: 13.0, bottom: 12.0),
+    this.width = 145,
   }) : super(key: key);
 
   final String text;
   final Function()? onTap;
+  final EdgeInsets padding;
+  final double width;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      width: 145,
+      width: width,
       child: ElevatedButton(
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -36,7 +40,7 @@ class PickImageButton extends ConsumerWidget {
         ),
         onPressed: onTap,
         child: Padding(
-          padding: const EdgeInsets.only(top: 13.0, bottom: 12.0),
+          padding: padding,
           child: Text(
             text,
             style: TextStyle(

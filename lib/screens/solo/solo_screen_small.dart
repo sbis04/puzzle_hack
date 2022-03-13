@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
+import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/widgets/solo_screen/countdown_overlay.dart';
@@ -69,7 +70,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
     var fontSize = 48.0;
     var boardSize = 300.0;
 
-    var spacing = 5;
+    var spacing = 3;
     var eachBoxSize = (boardSize / _puzzleSize) - (spacing * (_puzzleSize - 1));
 
     return Stack(
@@ -80,7 +81,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
             child: Container(
               color: Palette.blue.darken(0.3),
             ),
-            preferredSize: const Size(double.maxFinite, 60),
+            preferredSize: const Size(double.maxFinite, 30),
           ),
           body: Stack(
             children: [
@@ -135,7 +136,18 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
                     ),
                     const SizedBox(height: 16),
                     const TimerWidget(fontSize: 24),
-                    const SizedBox(height: 36),
+                    PreferredSize(
+                      child: TopBarLarge(
+                        puzzleSize: _puzzleSize,
+                        puzzleType: _puzzleType,
+                        color: Theme.of(context).colorScheme.background,
+                        tileGap: 10,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        isCentered: true,
+                      ),
+                      preferredSize: const Size(double.maxFinite, 100),
+                    ),
+                    // const SizedBox(height: 36),
                     PuzzleWidget(
                       solverClient: _solverClient,
                       boardSize: boardSize,
@@ -143,11 +155,14 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
                       initialPuzzleData: _initialPuzzleData,
                       fontSize: fontSize,
                       kInitialSpeed: kInitialSpeed,
+                      borderRadius: 16,
                     ),
-                    const SizedBox(height: 36),
+                    const SizedBox(height: 24),
                     GameButtonWidget(
                       solverClient: _solverClient,
                       initialPuzzleData: _initialPuzzleData,
+                      padding: const EdgeInsets.only(top: 10.0, bottom: 9.0),
+                      width: 130,
                     ),
                     const SizedBox(height: 100),
                   ],

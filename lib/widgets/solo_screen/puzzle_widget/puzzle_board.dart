@@ -16,6 +16,7 @@ class PuzzleBoard extends ConsumerWidget {
     this.images,
     this.animationSpeed = 300,
     this.isEnabled = true,
+    this.borderRadius = 20,
   }) : super(key: key);
 
   final PuzzleSolverClient solverClient;
@@ -26,6 +27,7 @@ class PuzzleBoard extends ConsumerWidget {
   final bool isEnabled;
   final int animationSpeed;
   final List<Image>? images;
+  final double borderRadius;
 
   // final int _animationSpeedInMilliseconds = 300;
 
@@ -69,7 +71,7 @@ class PuzzleBoard extends ConsumerWidget {
                                     .primary
                                     .withOpacity(isEnabled ? 1 : 0.5),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(borderRadius),
                                 ),
                                 child: SizedBox(
                                   height: eachBoxSize,
@@ -95,7 +97,7 @@ class PuzzleBoard extends ConsumerWidget {
                                 child: Opacity(
                                   opacity: isEnabled ? 1 : 0.5,
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(borderRadius),
                                     child: images![int.parse(puzzleData
                                             .offsetMap.entries
                                             .toList()[i]

@@ -11,6 +11,9 @@ class TopBarLarge extends ConsumerWidget {
     required String puzzleType,
     required Color color,
     required int puzzleSize,
+    this.padding = const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+    this.tileGap = 16,
+    this.isCentered = false,
     Key? key,
   })  : _puzzleType = puzzleType,
         _color = color,
@@ -20,16 +23,20 @@ class TopBarLarge extends ConsumerWidget {
   final String _puzzleType;
   final Color _color;
   final int _puzzleSize;
+  final EdgeInsets padding;
+  final double tileGap;
+  final bool isCentered;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: _color,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
+        padding: padding,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(),
+            isCentered ? const SizedBox() : const Spacer(),
             TextButton(
               style: _puzzleType == 'Normal'
                   ? ButtonStyle(
@@ -68,7 +75,7 @@ class TopBarLarge extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 16.0),
+            SizedBox(width: tileGap),
             TextButton(
               style: _puzzleType == 'Photo'
                   ? ButtonStyle(
@@ -114,7 +121,7 @@ class TopBarLarge extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(width: 16.0),
+            SizedBox(width: tileGap),
             TextButton(
               style: _puzzleType == 'Multiplayer'
                   ? ButtonStyle(

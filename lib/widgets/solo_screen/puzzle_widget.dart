@@ -15,6 +15,7 @@ class PuzzleWidget extends StatelessWidget {
     required PuzzleData initialPuzzleData,
     required this.fontSize,
     this.images,
+    this.borderRadius = 20,
     required int kInitialSpeed,
   })  : _solverClient = solverClient,
         _initialPuzzleData = initialPuzzleData,
@@ -28,6 +29,7 @@ class PuzzleWidget extends StatelessWidget {
   final double fontSize;
   final List<Image>? images;
   final int _kInitialSpeed;
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class PuzzleWidget extends StatelessWidget {
             images: images,
             isEnabled: false,
             animationSpeed: _kInitialSpeed,
+            borderRadius: borderRadius,
           ),
           initializing: () => PuzzleBoard(
             solverClient: _solverClient,
@@ -55,6 +58,7 @@ class PuzzleWidget extends StatelessWidget {
             images: images,
             isEnabled: false,
             animationSpeed: _kInitialSpeed,
+            borderRadius: borderRadius,
           ),
           scrambling: (puzzleData) => PuzzleBoard(
             solverClient: _solverClient,
@@ -65,6 +69,7 @@ class PuzzleWidget extends StatelessWidget {
             images: images,
             isEnabled: false,
             animationSpeed: _kInitialSpeed,
+            borderRadius: borderRadius,
           ),
           current: (puzzleData) => PuzzleBoard(
             solverClient: _solverClient,
@@ -73,6 +78,7 @@ class PuzzleWidget extends StatelessWidget {
             puzzleData: puzzleData,
             fontSize: fontSize,
             images: images,
+            borderRadius: borderRadius,
           ),
           computingSolution: (puzzleData) => PuzzleBoard(
             solverClient: _solverClient,
@@ -81,6 +87,7 @@ class PuzzleWidget extends StatelessWidget {
             puzzleData: puzzleData,
             fontSize: fontSize,
             images: images,
+            borderRadius: borderRadius,
           ),
           autoSolving: (puzzleData) => PuzzleBoard(
             solverClient: _solverClient,
@@ -89,6 +96,7 @@ class PuzzleWidget extends StatelessWidget {
             puzzleData: puzzleData,
             fontSize: fontSize,
             images: images,
+            borderRadius: borderRadius,
           ),
           solved: (puzzleData) => PuzzleBoard(
             solverClient: _solverClient,
@@ -98,6 +106,7 @@ class PuzzleWidget extends StatelessWidget {
             fontSize: fontSize,
             images: images,
             isEnabled: false,
+            borderRadius: borderRadius,
           ),
           error: (_) => PuzzleBoard(
             solverClient: _solverClient,
@@ -106,6 +115,7 @@ class PuzzleWidget extends StatelessWidget {
             puzzleData: _initialPuzzleData,
             fontSize: fontSize,
             images: images,
+            borderRadius: borderRadius,
           ),
         );
       },

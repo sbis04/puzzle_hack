@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_flutter_puzzle/res/palette.dart';
 
 class PuzzleGameButton extends ConsumerWidget {
   const PuzzleGameButton({
     Key? key,
     required this.text,
     required this.onTap,
+    required this.width,
+    required this.padding,
   }) : super(key: key);
 
   final String text;
   final Function()? onTap;
+  final double width;
+  final EdgeInsets padding;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-      width: 145,
+      width: width,
       child: ElevatedButton(
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -29,7 +32,9 @@ class PuzzleGameButton extends ConsumerWidget {
                 return Theme.of(context).colorScheme.primary.withOpacity(0.5);
               }
 
-              return Theme.of(context).colorScheme.primary; // Use the component's default.
+              return Theme.of(context)
+                  .colorScheme
+                  .primary; // Use the component's default.
             },
           ),
         ),
@@ -43,7 +48,7 @@ class PuzzleGameButton extends ConsumerWidget {
         // ),
         onPressed: onTap,
         child: Padding(
-          padding: const EdgeInsets.only(top: 13.0, bottom: 12.0),
+          padding: padding,
           child: Text(
             text,
             style: TextStyle(
