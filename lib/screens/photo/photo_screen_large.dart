@@ -10,6 +10,7 @@ import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
 import 'package:my_flutter_puzzle/res/strings.dart';
 import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
+import 'package:my_flutter_puzzle/widgets/photo_screen/image_viewer.dart';
 import 'package:my_flutter_puzzle/widgets/photo_screen/pick_image_button.dart';
 import 'package:my_flutter_puzzle/widgets/solo_screen/solo_screen_export.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -155,45 +156,47 @@ class _SoloScreenLargeState extends ConsumerState<PhotoScreenLarge> {
                   fontSize: 40,
                 ),
                 const SizedBox(height: 36),
-                Consumer(builder: (context, ref, child) {
-                  final state = ref.watch(imageSplitterNotifierProvider);
+                Consumer(
+                  builder: (context, ref, child) {
+                    final state = ref.watch(imageSplitterNotifierProvider);
 
-                  return state.maybeWhen(
-                    () => PuzzleWidget(
-                      solverClient: _solverClient,
-                      boardSize: boardSize,
-                      eachBoxSize: eachBoxSize,
-                      initialPuzzleData: _initialPuzzleData,
-                      fontSize: fontSize,
-                      images: _previousImages,
-                      kInitialSpeed: kInitialSpeed,
-                    ),
-                    complete: (image, images, palette) {
-                      _previousImages = images;
-                      _previousImage = image;
-                      _previousPalette = palette;
-
-                      return PuzzleWidget(
+                    return state.maybeWhen(
+                      () => PuzzleWidget(
                         solverClient: _solverClient,
                         boardSize: boardSize,
                         eachBoxSize: eachBoxSize,
                         initialPuzzleData: _initialPuzzleData,
                         fontSize: fontSize,
-                        images: images,
+                        images: _previousImages,
                         kInitialSpeed: kInitialSpeed,
-                      );
-                    },
-                    orElse: () => PuzzleWidget(
-                      solverClient: _solverClient,
-                      boardSize: boardSize,
-                      eachBoxSize: eachBoxSize,
-                      initialPuzzleData: _initialPuzzleData,
-                      fontSize: fontSize,
-                      images: _previousImages,
-                      kInitialSpeed: kInitialSpeed,
-                    ),
-                  );
-                }),
+                      ),
+                      complete: (image, images, palette) {
+                        _previousImages = images;
+                        _previousImage = image;
+                        _previousPalette = palette;
+
+                        return PuzzleWidget(
+                          solverClient: _solverClient,
+                          boardSize: boardSize,
+                          eachBoxSize: eachBoxSize,
+                          initialPuzzleData: _initialPuzzleData,
+                          fontSize: fontSize,
+                          images: images,
+                          kInitialSpeed: kInitialSpeed,
+                        );
+                      },
+                      orElse: () => PuzzleWidget(
+                        solverClient: _solverClient,
+                        boardSize: boardSize,
+                        eachBoxSize: eachBoxSize,
+                        initialPuzzleData: _initialPuzzleData,
+                        fontSize: fontSize,
+                        images: _previousImages,
+                        kInitialSpeed: kInitialSpeed,
+                      ),
+                    );
+                  },
+                ),
                 const SizedBox(height: 30),
               ],
             ),
@@ -223,195 +226,28 @@ class _SoloScreenLargeState extends ConsumerState<PhotoScreenLarge> {
                   ),
                   Visibility(
                     visible: !_isStartPressed,
-                    child: Consumer(
-                      builder: (context, ref, child) {
-                        final state = ref.watch(imageSplitterNotifierProvider);
-                        return state.maybeWhen(
-                          () => const SizedBox(),
-                          complete: (image, images, palette) => Padding(
-                            padding: const EdgeInsets.only(right: 0.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    // border: Border.all(color: Colors.white, width: 3),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image(
-                                      image: image.image,
-                                      height: 200,
-                                      width: 200,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: SizedBox(
-                                    width: 200,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                        horizontal: 16,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  palette.colors.elementAt(0),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white60,
-                                                width: 3,
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  palette.colors.elementAt(1),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white60,
-                                                width: 3,
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 40,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  palette.colors.elementAt(2),
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: Colors.white60,
-                                                width: 3,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                PickImageButton(
-                                  text: 'Pick Image',
-                                  onTap: () => ref
-                                      .read(imageSplitterNotifierProvider
-                                          .notifier)
-                                      .generateImages(
-                                        picker: _imagePicker,
-                                        puzzleSize: _puzzleSize,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          orElse: () => _previousImage != null
-                              ? Padding(
-                                  padding: const EdgeInsets.only(right: 0.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          // border: Border.all(color: Colors.white, width: 3),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: Image(
-                                            image: _previousImage!.image,
-                                            height: 200,
-                                            width: 200,
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 8.0),
-                                        child: SizedBox(
-                                          width: 200,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                              horizontal: 16,
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: _previousPalette!
-                                                        .colors
-                                                        .elementAt(0),
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Colors.white60,
-                                                      width: 3,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: _previousPalette!
-                                                        .colors
-                                                        .elementAt(1),
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Colors.white60,
-                                                      width: 3,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 40,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                    color: _previousPalette!
-                                                        .colors
-                                                        .elementAt(2),
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Colors.white60,
-                                                      width: 3,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      const PickImageButton(
-                                        text: 'Pick Image',
-                                        onTap: null,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : const SizedBox(),
-                        );
-                      },
+                    child: Column(
+                      children: [
+                        ImageViewer(
+                          imagePicker: _imagePicker,
+                          puzzleSize: _puzzleSize,
+                          previousImage: _previousImage,
+                          previousPalette: _previousPalette,
+                          imageSize: 200,
+                        ),
+                        PickImageButton(
+                          text: 'Pick Image',
+                          onTap: ref.read(imageSplitterNotifierProvider)
+                                  is ImageSplitterComplete
+                              ? () => ref
+                                  .read(imageSplitterNotifierProvider.notifier)
+                                  .generateImages(
+                                    picker: _imagePicker,
+                                    puzzleSize: _puzzleSize,
+                                  )
+                              : null,
+                        ),
+                      ],
                     ),
                   ),
                   const Spacer(),
