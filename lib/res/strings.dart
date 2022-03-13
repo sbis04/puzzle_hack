@@ -11,6 +11,8 @@ class Strings {
   static const othermovesFieldName = 'othermoves';
 }
 
+const defaultImagePath = 'assets/images/default_image.png';
+
 /// username can be made like this
 /// <entered_name>@<uid>
 /// eg: souvik@124432523
