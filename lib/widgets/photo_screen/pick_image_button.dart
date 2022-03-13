@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_flutter_puzzle/res/palette.dart';
 
-class PuzzleGameButton extends ConsumerWidget {
-  const PuzzleGameButton({
+class PickImageButton extends ConsumerWidget {
+  const PickImageButton({
     Key? key,
     required this.text,
     required this.onTap,
@@ -29,18 +28,12 @@ class PuzzleGameButton extends ConsumerWidget {
                 return Theme.of(context).colorScheme.primary.withOpacity(0.5);
               }
 
-              return Theme.of(context).colorScheme.primary; // Use the component's default.
+              return Theme.of(context)
+                  .colorScheme
+                  .primary; // Use the component's default.
             },
           ),
         ),
-        // style: ElevatedButton.styleFrom(
-        //   onPrimary: Palette.blue,
-        //   onSurface: Palette.blue,
-        //   primary: Palette.blue,
-        //   shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.circular(30),
-        //   ),
-        // ),
         onPressed: onTap,
         child: Padding(
           padding: const EdgeInsets.only(top: 13.0, bottom: 12.0),

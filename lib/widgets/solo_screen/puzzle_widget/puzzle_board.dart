@@ -13,6 +13,7 @@ class PuzzleBoard extends ConsumerWidget {
     required this.eachBoxSize,
     required this.puzzleData,
     required this.fontSize,
+    this.images,
     this.animationSpeed = 300,
     this.isEnabled = true,
   }) : super(key: key);
@@ -24,6 +25,7 @@ class PuzzleBoard extends ConsumerWidget {
   final PuzzleData puzzleData;
   final bool isEnabled;
   final int animationSpeed;
+  final List<Image>? images;
 
   // final int _animationSpeedInMilliseconds = 300;
 
@@ -59,31 +61,50 @@ class PuzzleBoard extends ConsumerWidget {
                                       .key),
                                   prev: puzzleData,
                                 ),
-                        child: Card(
-                          elevation: 4,
-                          color: Palette.blue.withOpacity(isEnabled ? 1 : 0.5),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: SizedBox(
-                            height: eachBoxSize,
-                            width: eachBoxSize,
-                            child: Center(
-                              child: Text(
-                                puzzleData.offsetMap.entries
-                                    .toList()[i]
-                                    .key
-                                    .toString(),
-                                style: TextStyle(
-                                  fontSize: fontSize,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                      .withOpacity(isEnabled ? 1 : 0.5),
+                        child: images == null
+                            ? Card(
+                                elevation: 4,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(isEnabled ? 1 : 0.5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: SizedBox(
+                                  height: eachBoxSize,
+                                  width: eachBoxSize,
+                                  child: Center(
+                                    child: Text(
+                                      puzzleData.offsetMap.entries
+                                          .toList()[i]
+                                          .key
+                                          .toString(),
+                                      style: TextStyle(
+                                        fontSize: fontSize,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white
+                                            .withOpacity(isEnabled ? 1 : 0.5),
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                            : SizedBox(
+                                height: eachBoxSize,
+                                width: eachBoxSize,
+                                child: Opacity(
+                                  opacity: isEnabled ? 1 : 0.5,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: images![int.parse(puzzleData
+                                            .offsetMap.entries
+                                            .toList()[i]
+                                            .key
+                                            .toString()) -
+                                        1],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   )

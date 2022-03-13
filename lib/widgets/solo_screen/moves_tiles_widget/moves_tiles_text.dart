@@ -3,19 +3,21 @@ import 'package:flutter/material.dart';
 class MovesTilesText extends StatelessWidget {
   final int moves;
   final int tiles;
+  final double fontSize;
 
   const MovesTilesText({
     Key? key,
     required this.moves,
     required this.tiles,
+    required this.fontSize,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return RichText(
       text: TextSpan(
-        style: const TextStyle(
-          fontSize: 24,
+        style: TextStyle(
+          fontSize: fontSize,
           // fontWeight: FontWeight.w500,
           color: Colors.white,
         ),
