@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/notifiers/image_splitter_notifier.dart';
+import 'package:my_flutter_puzzle/application/notifiers/login_register_notifier.dart';
 import 'package:my_flutter_puzzle/application/notifiers/player_matching_notifier.dart';
 import 'package:my_flutter_puzzle/application/notifiers/puzzle_notifier.dart';
 import 'package:my_flutter_puzzle/application/notifiers/puzzle_type_notifier.dart';
@@ -11,15 +12,17 @@ import 'package:my_flutter_puzzle/utils/image_splitter.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 
 import 'application/notifiers/anonymous_auth_notifier.dart';
+import 'application/notifiers/email_auth_notifier.dart';
 import 'application/notifiers/timer_notifier.dart';
 import 'application/states/anonymous_auth_state.dart';
+import 'application/states/email_auth_state.dart';
 import 'utils/authentication_client.dart';
 
-final authenticationClientProvider = Provider<AuthenticationClient>(
+final authenticationClientProvider = Provider.autoDispose<AuthenticationClient>(
   (ref) => AuthenticationClient(),
 );
 
-final databaseClientProvider = Provider<DatabaseClient>(
+final databaseClientProvider = Provider.autoDispose<DatabaseClient>(
   (ref) => DatabaseClient(),
 );
 
@@ -31,13 +34,13 @@ final imageSplitterProvider = Provider<ImageSplitter>(
 //   (ref) => PuzzleSolverClient(),
 // );
 
-final anonymousAuthNotificationProvider = StateNotifierProvider.autoDispose<
-    AnonymousAuthNotifier, AnonymousAuthState>(
-  (ref) => AnonymousAuthNotifier(
-    ref.watch(authenticationClientProvider),
-    ref.watch(databaseClientProvider),
-  ),
-);
+// final anonymousAuthNotificationProvider = StateNotifierProvider.autoDispose<
+//     AnonymousAuthNotifier, AnonymousAuthState>(
+//   (ref) => AnonymousAuthNotifier(
+//     ref.watch(authenticationClientProvider),
+//     ref.watch(databaseClientProvider),
+//   ),
+// );
 
 final playerMatchingNotifierProvider = StateNotifierProvider.autoDispose<
     PlayerMatchingNotifier, PlayerMatchingState>(
@@ -63,6 +66,18 @@ final timerNotifierProvider = StateNotifierProvider<TimerNotifier, String>(
 final puzzleTypeNotifierProvider =
     StateNotifierProvider<PuzzleTypeNotifier, PuzzleType>(
   (ref) => PuzzleTypeNotifier(),
+);
+
+final isLoginNotifier = StateNotifierProvider<IsLoginNotifier, bool>(
+  (ref) => IsLoginNotifier(),
+);
+
+final emailAuthNotificationProvider =
+    StateNotifierProvider.autoDispose<EmailAuthNotifier, EmailAuthState>(
+  (ref) => EmailAuthNotifier(
+    ref.watch(authenticationClientProvider),
+    ref.watch(databaseClientProvider),
+  ),
 );
 
 // EXAMPLE of StateProvider

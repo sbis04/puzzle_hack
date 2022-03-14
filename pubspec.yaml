@@ -81,6 +81,7 @@ flutter:
   assets:
     - assets/rive/dash.riv
     - assets/images/default_image.png
+    - assets/images/puzzle_side_image.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

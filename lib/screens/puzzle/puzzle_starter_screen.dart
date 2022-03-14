@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/notifiers/puzzle_type_notifier.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
+import 'package:my_flutter_puzzle/screens/multiplayer/multiplayer_screen.dart';
 import 'package:my_flutter_puzzle/screens/photo/photo_screen.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
@@ -49,32 +50,59 @@ class _SoloScreenState extends ConsumerState<PuzzleStarterScreen> {
     final name = currentPuzzleType.name[0].toUpperCase() +
         currentPuzzleType.name.substring(1);
 
-    switch (currentPuzzleType) {
-      case PuzzleType.normal:
-        return SoloScreen(
-          solverClient: _solverClient,
-          initialPuzzleData: _initialPuzzleData,
-          puzzleSize: _puzzleSize,
-          puzzleType: name,
-          riveController: _riveController,
-        );
-      case PuzzleType.photo:
-        return PhotoScreen(
-          solverClient: _solverClient,
-          initialPuzzleData: _initialPuzzleData,
-          puzzleSize: _puzzleSize,
-          puzzleType: name,
-          riveController: _riveController,
-        );
-      case PuzzleType.multiplayer:
-      default:
-        return SoloScreen(
-          solverClient: _solverClient,
-          initialPuzzleData: _initialPuzzleData,
-          puzzleSize: _puzzleSize,
-          puzzleType: name,
-          riveController: _riveController,
-        );
-    }
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 400),
+      child: currentPuzzleType == PuzzleType.normal
+          ? SoloScreen(
+              solverClient: _solverClient,
+              initialPuzzleData: _initialPuzzleData,
+              puzzleSize: _puzzleSize,
+              puzzleType: name,
+              riveController: _riveController,
+            )
+          : currentPuzzleType == PuzzleType.photo
+              ? PhotoScreen(
+                  solverClient: _solverClient,
+                  initialPuzzleData: _initialPuzzleData,
+                  puzzleSize: _puzzleSize,
+                  puzzleType: name,
+                  riveController: _riveController,
+                )
+              : MultiplayerScreen(
+                  solverClient: _solverClient,
+                  initialPuzzleData: _initialPuzzleData,
+                  puzzleSize: _puzzleSize,
+                  puzzleType: name,
+                  riveController: _riveController,
+                ),
+    );
+
+    // switch (currentPuzzleType) {
+    //   case PuzzleType.normal:
+    //     return SoloScreen(
+    //       solverClient: _solverClient,
+    //       initialPuzzleData: _initialPuzzleData,
+    //       puzzleSize: _puzzleSize,
+    //       puzzleType: name,
+    //       riveController: _riveController,
+    //     );
+    //   case PuzzleType.photo:
+    //     return PhotoScreen(
+    //       solverClient: _solverClient,
+    //       initialPuzzleData: _initialPuzzleData,
+    //       puzzleSize: _puzzleSize,
+    //       puzzleType: name,
+    //       riveController: _riveController,
+    //     );
+    //   case PuzzleType.multiplayer:
+    //   default:
+    //     return MultiplayerScreen(
+    //       solverClient: _solverClient,
+    //       initialPuzzleData: _initialPuzzleData,
+    //       puzzleSize: _puzzleSize,
+    //       puzzleType: name,
+    //       riveController: _riveController,
+    //     );
+    // }
   }
 }

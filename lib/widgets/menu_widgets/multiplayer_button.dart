@@ -46,9 +46,9 @@ class _MultiplayerButtonState extends ConsumerState<MultiplayerButton> {
           ),
         ),
         onPressed: () {
-          ref
-              .read(playerMatchingNotifierProvider.notifier)
-              .triggerMatching(myInfo: widget.myInfo, numbers: numberList);
+          // ref
+          //     .read(playerMatchingNotifierProvider.notifier)
+          //     .triggerMatching(myInfo: widget.myInfo, numbers: numberList);
         },
         child: const Padding(
           padding: EdgeInsets.all(16.0),

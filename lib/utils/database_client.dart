@@ -7,7 +7,7 @@ import 'package:my_flutter_puzzle/res/strings.dart';
 class DatabaseClient {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> addUser({required UserData userInfo}) async {
+  Future<void> addUser({required EUserData userInfo}) async {
     final usersCollection =
         firestore.collection(Strings.usersCollectionName).doc(userInfo.uid);
     final userData = userInfo.toJson();
@@ -18,7 +18,7 @@ class DatabaseClient {
         .catchError((error) => log("Failed to add user: $error"));
   }
 
-  Future<void> addPlayerToQueue({required UserData userInfo}) async {
+  Future<void> addPlayerToQueue({required EUserData userInfo}) async {
     final queueCollection =
         firestore.collection(Strings.queueCollectionName).doc(userInfo.uid);
 
@@ -35,9 +35,9 @@ class DatabaseClient {
         .catchError((error) => log("Failed to add user to the queue: $error"));
   }
 
-  Future removeQueuedUser({required UserData myInfo}) async {}
+  Future removeQueuedUser({required EUserData myInfo}) async {}
 
-  Future<UserData?> findEarliestUser({required UserData myInfo}) async {
+  Future<UserData?> findEarliestUser({required EUserData myInfo}) async {
     UserData? earliestUser;
     final queueCollection = firestore.collection(Strings.queueCollectionName);
 
@@ -67,14 +67,14 @@ class DatabaseClient {
     return earliestUser;
   }
 
-  Stream<DocumentSnapshot> isMatched({required UserData myInfo}) {
+  Stream<DocumentSnapshot> isMatched({required EUserData myInfo}) {
     final queueCollectionDoc =
         firestore.collection(Strings.queueCollectionName).doc(myInfo.uid);
 
     return queueCollectionDoc.snapshots();
   }
 
-  Future<String> foundMatch({required UserData myInfo}) async {
+  Future<String> foundMatch({required EUserData myInfo}) async {
     final queueCollectionDoc =
         firestore.collection(Strings.queueCollectionName).doc(myInfo.uid);
 
@@ -96,7 +96,7 @@ class DatabaseClient {
   /// Returns the id as `String` (nullable).
   ///
   Future<String?> matchPlayers({
-    required UserData myInfo,
+    required EUserData myInfo,
     required List<int> numbers,
   }) async {
     final userToBeMatched = await findEarliestUser(myInfo: myInfo);

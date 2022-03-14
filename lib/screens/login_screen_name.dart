@@ -3,14 +3,14 @@ import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/widgets/login_widgets/name_field.dart';
 import 'package:my_flutter_puzzle/widgets/login_widgets/start_game_widget.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreenName extends StatefulWidget {
+  const LoginScreenName({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreenName> createState() => _LoginScreenNameState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenNameState extends State<LoginScreenName> {
   late final TextEditingController _nameTextController;
   late final FocusNode _nameFocusNode;
 
@@ -43,9 +43,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                StartGameWidget(
-                  nameString: _nameString,
-                ),
+                // StartGameWidget(
+                //   nameString: _nameString,
+                // ),
               ],
             ),
           ),
