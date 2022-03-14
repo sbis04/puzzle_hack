@@ -4,7 +4,7 @@
 
 > Web App link: https://flutterpuzzle.codemagic.app
 
-
+![](screenshots/photo_mode.gif)
 
 Playing a game or solving a puzzle is always fun when you share with friends. We have created a puzzle that consists of three main modes:
 
