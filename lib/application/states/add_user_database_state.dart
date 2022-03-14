@@ -7,6 +7,6 @@ part 'add_user_database_state.freezed.dart';
 class AddUserDatabaseState with _$AddUserDatabaseState {
   const factory AddUserDatabaseState() = AddUserDatabaseIdle;
   const factory AddUserDatabaseState.processing() = AddUserDatabaseProcessing;
-  const factory AddUserDatabaseState.done(UserData user) = AddUserDatabaseDone;
+  const factory AddUserDatabaseState.done(EUserData user) = AddUserDatabaseDone;
   const factory AddUserDatabaseState.error({String? message}) = AddUserDatabaseError;
 }

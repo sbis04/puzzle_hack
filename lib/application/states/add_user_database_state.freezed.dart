@@ -26,7 +26,7 @@ class _$AddUserDatabaseStateTearOff {
     return const AddUserDatabaseProcessing();
   }
 
-  AddUserDatabaseDone done(UserData user) {
+  AddUserDatabaseDone done(EUserData user) {
     return AddUserDatabaseDone(
       user,
     );
@@ -48,7 +48,7 @@ mixin _$AddUserDatabaseState {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(UserData user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function(String? message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -56,7 +56,7 @@ mixin _$AddUserDatabaseState {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -64,7 +64,7 @@ mixin _$AddUserDatabaseState {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
     required TResult orElse(),
   }) =>
@@ -156,7 +156,7 @@ class _$AddUserDatabaseIdle implements AddUserDatabaseIdle {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(UserData user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function(String? message) error,
   }) {
     return $default();
@@ -167,7 +167,7 @@ class _$AddUserDatabaseIdle implements AddUserDatabaseIdle {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
   }) {
     return $default?.call();
@@ -178,7 +178,7 @@ class _$AddUserDatabaseIdle implements AddUserDatabaseIdle {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
     required TResult orElse(),
   }) {
@@ -275,7 +275,7 @@ class _$AddUserDatabaseProcessing implements AddUserDatabaseProcessing {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(UserData user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function(String? message) error,
   }) {
     return processing();
@@ -286,7 +286,7 @@ class _$AddUserDatabaseProcessing implements AddUserDatabaseProcessing {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
   }) {
     return processing?.call();
@@ -297,7 +297,7 @@ class _$AddUserDatabaseProcessing implements AddUserDatabaseProcessing {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
     required TResult orElse(),
   }) {
@@ -354,7 +354,7 @@ abstract class $AddUserDatabaseDoneCopyWith<$Res> {
   factory $AddUserDatabaseDoneCopyWith(
           AddUserDatabaseDone value, $Res Function(AddUserDatabaseDone) then) =
       _$AddUserDatabaseDoneCopyWithImpl<$Res>;
-  $Res call({UserData user});
+  $Res call({EUserData user});
 }
 
 /// @nodoc
@@ -376,7 +376,7 @@ class _$AddUserDatabaseDoneCopyWithImpl<$Res>
       user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as UserData,
+              as EUserData,
     ));
   }
 }
@@ -387,7 +387,7 @@ class _$AddUserDatabaseDone implements AddUserDatabaseDone {
   const _$AddUserDatabaseDone(this.user);
 
   @override
-  final UserData user;
+  final EUserData user;
 
   @override
   String toString() {
@@ -416,7 +416,7 @@ class _$AddUserDatabaseDone implements AddUserDatabaseDone {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(UserData user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function(String? message) error,
   }) {
     return done(user);
@@ -427,7 +427,7 @@ class _$AddUserDatabaseDone implements AddUserDatabaseDone {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
   }) {
     return done?.call(user);
@@ -438,7 +438,7 @@ class _$AddUserDatabaseDone implements AddUserDatabaseDone {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
     required TResult orElse(),
   }) {
@@ -487,9 +487,9 @@ class _$AddUserDatabaseDone implements AddUserDatabaseDone {
 }
 
 abstract class AddUserDatabaseDone implements AddUserDatabaseState {
-  const factory AddUserDatabaseDone(UserData user) = _$AddUserDatabaseDone;
+  const factory AddUserDatabaseDone(EUserData user) = _$AddUserDatabaseDone;
 
-  UserData get user;
+  EUserData get user;
   @JsonKey(ignore: true)
   $AddUserDatabaseDoneCopyWith<AddUserDatabaseDone> get copyWith =>
       throw _privateConstructorUsedError;
@@ -563,7 +563,7 @@ class _$AddUserDatabaseError implements AddUserDatabaseError {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(UserData user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function(String? message) error,
   }) {
     return error(message);
@@ -574,7 +574,7 @@ class _$AddUserDatabaseError implements AddUserDatabaseError {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
   }) {
     return error?.call(message);
@@ -585,7 +585,7 @@ class _$AddUserDatabaseError implements AddUserDatabaseError {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(UserData user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function(String? message)? error,
     required TResult orElse(),
   }) {
