@@ -77,12 +77,12 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
       children: [
         Scaffold(
           backgroundColor: Palette.blue.darken(0.3),
-          appBar: PreferredSize(
-            child: Container(
-              color: Palette.blue.darken(0.3),
-            ),
-            preferredSize: const Size(double.maxFinite, 30),
-          ),
+          // appBar: PreferredSize(
+          //   child: Container(
+          //     color: Palette.blue.darken(0.3),
+          //   ),
+          //   preferredSize: const Size(double.maxFinite, 30),
+          // ),
           body: Stack(
             children: [
               // CountdownWidget(
@@ -120,7 +120,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
                     //     color: Colors.white,
                     //   ),
                     // ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 30),
                     const Text(
                       'Puzzle Challenge',
                       style: TextStyle(
@@ -129,20 +129,20 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenSmall> {
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     MovesTilesWidget(
                       solverClient: _solverClient,
                       fontSize: 22,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     const TimerWidget(fontSize: 24),
                     PreferredSize(
                       child: TopBarLarge(
                         puzzleSize: _puzzleSize,
                         puzzleType: _puzzleType,
                         color: Theme.of(context).colorScheme.background,
-                        tileGap: 10,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        tileGap: 4,
+                        padding: const EdgeInsets.only(top: 10, bottom: 8),
                         isCentered: true,
                       ),
                       preferredSize: const Size(double.maxFinite, 100),
