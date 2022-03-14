@@ -185,12 +185,12 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
       }
     }
 
-    _databaseClient.updateGameState(
-      id: widget.id,
-      mydata: widget.myInfo,
-      numberList: myList,
-      moves: _moves,
-    );
+    // _databaseClient.updateGameState(
+    //   id: widget.id,
+    //   mydata: widget.myInfo,
+    //   numberList: myList,
+    //   moves: _moves,
+    // );
 
     log('List: $myList');
     log('-----------------------');
@@ -238,74 +238,78 @@ class _PuzzleScreenState extends State<PuzzleScreen> {
           ),
           // PLAYER 2 puzzle --> opponent
           StreamBuilder<DocumentSnapshot>(
-              stream: _databaseClient.trackGameState(id: widget.id),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  final data = snapshot.data!.data() as Map<String, dynamic>;
+            stream: _databaseClient.trackGameState(id: widget.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final data = snapshot.data!.data() as Map<String, dynamic>;
 
-                  final String myUid = data[Strings.myuidFieldName];
-                  final String otherUid = data[Strings.otheruidFieldName];
-                  final String currentUid = widget.myInfo.uid;
-                  List<dynamic>? numberList;
-                  int? moves;
+                final String myUid = data[Strings.myuidFieldName];
+                final String otherUid = data[Strings.otheruidFieldName];
+                final String currentUid = widget.myInfo.uid;
+                List<dynamic>? numberList;
+                int? moves;
 
-                  List<String> idList = widget.id.split('-');
-                  late final String opponentUid;
+                List<String> idList = widget.id.split('-');
+                late final String opponentUid;
 
-                  for (String id in idList) {
-                    if (id != currentUid) {
-                      opponentUid = id;
-                    }
+                for (String id in idList) {
+                  if (id != currentUid) {
+                    opponentUid = id;
                   }
-
-                  log('myuid: $myUid, otheruid: $otherUid, toMatch: $opponentUid');
-
-                  if (otherUid != opponentUid) {
-                    numberList = data[Strings.mylistFieldName];
-                    moves = data[Strings.mymovesFieldName];
-                  } else if (myUid != opponentUid) {
-                    numberList = data[Strings.otherlistFieldName];
-                    moves = data[Strings.othermovesFieldName];
-                  }
-
-                  log('list: $numberList, moves: $moves');
-
-                  return Column(
-                    children: [
-                      const PlayerText(
-                        displayName: 'PLAYER 2',
-                      ),
-                      // TODO: Change font size
-                      MovesText(moves: moves ?? _moves, fontSize: 60),
-                      Grid(
-                        // TODO: Use dynamic size
-                        puzzleSize: 4,
-                        key: UniqueKey(),
-                        number: numberList ?? opponentList,
-                        onTap: () {},
-                        color: Colors.deepOrange,
-                      ),
-                    ],
-                  );
                 }
+
+                log('myuid: $myUid, otheruid: $otherUid, toMatch: $opponentUid');
+
+                if (otherUid != opponentUid) {
+                  numberList = data[Strings.mylistFieldName];
+                  moves = data[Strings.mymovesFieldName];
+                } else if (myUid != opponentUid) {
+                  numberList = data[Strings.otherlistFieldName];
+                  moves = data[Strings.othermovesFieldName];
+                }
+
+                log('list: $numberList, moves: $moves');
+
                 return Column(
                   children: [
                     const PlayerText(
                       displayName: 'PLAYER 2',
                     ),
                     // TODO: Change font size
-                    MovesText(moves: _moves, fontSize: 60,),
+                    MovesText(moves: moves ?? _moves, fontSize: 60),
                     Grid(
                       // TODO: Use dynamic size
                       puzzleSize: 4,
                       key: UniqueKey(),
-                      number: opponentList,
+                      number: numberList ?? opponentList,
                       onTap: () {},
-                      color: Colors.grey,
+                      color: Colors.deepOrange,
                     ),
                   ],
                 );
-              }),
+              }
+              return Column(
+                children: [
+                  const PlayerText(
+                    displayName: 'PLAYER 2',
+                  ),
+                  // TODO: Change font size
+                  MovesText(
+                    moves: _moves,
+                    fontSize: 60,
+                  ),
+                  Grid(
+                    // TODO: Use dynamic size
+                    puzzleSize: 4,
+                    key: UniqueKey(),
+                    number: opponentList,
+                    onTap: () {},
+                    color: Colors.grey,
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
