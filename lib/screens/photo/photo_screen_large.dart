@@ -8,7 +8,7 @@ import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
 import 'package:my_flutter_puzzle/res/strings.dart';
-import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
+import 'package:my_flutter_puzzle/screens/puzzle/top_bar.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/widgets/photo_screen/image_viewer.dart';
 import 'package:my_flutter_puzzle/widgets/photo_screen/pick_image_button.dart';
@@ -96,7 +96,7 @@ class _SoloScreenLargeState extends ConsumerState<PhotoScreenLarge> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: PreferredSize(
-        child: TopBarLarge(
+        child: TopBar(
           puzzleSize: _puzzleSize,
           puzzleType: _puzzleType,
           color: Theme.of(context).colorScheme.background,

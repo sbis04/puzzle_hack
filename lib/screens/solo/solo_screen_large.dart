@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
-import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
+import 'package:my_flutter_puzzle/screens/puzzle/top_bar.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/widgets/solo_screen/solo_screen_export.dart';
@@ -76,7 +76,7 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
       backgroundColor: Theme.of(context).backgroundColor,
       // backgroundColor: Palette.blue.darken(0.3),
       appBar: PreferredSize(
-        child: TopBarLarge(
+        child: TopBar(
           puzzleSize: _puzzleSize,
           puzzleType: _puzzleType,
           color: Theme.of(context).backgroundColor,

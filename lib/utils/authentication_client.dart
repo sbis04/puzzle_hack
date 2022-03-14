@@ -26,6 +26,11 @@ class AuthenticationClient {
     return currentUser;
   }
 
+  User? getCurrentUser() {
+    final user = auth.currentUser;
+    return user;
+  }
+
   Future<User?> signInUsingEmailPassword({
     required String email,
     required String password,

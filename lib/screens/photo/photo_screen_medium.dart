@@ -5,7 +5,7 @@ import 'package:my_flutter_puzzle/application/states/image_splitter_state.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
-import 'package:my_flutter_puzzle/screens/puzzle/top_bar_large.dart';
+import 'package:my_flutter_puzzle/screens/puzzle/top_bar.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/widgets/photo_screen/image_viewer.dart';
@@ -98,7 +98,7 @@ class _PhotoScreenMediumState extends ConsumerState<PhotoScreenMedium> {
         Scaffold(
           backgroundColor: Palette.blue.darken(0.3),
           appBar: PreferredSize(
-            child: TopBarLarge(
+            child: TopBar(
               puzzleSize: _puzzleSize,
               puzzleType: _puzzleType,
               color: Theme.of(context).colorScheme.background,

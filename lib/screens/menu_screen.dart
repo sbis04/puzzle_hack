@@ -55,74 +55,77 @@
 //         body: Center(
 //           child: SizedBox(
 //             width: screenSize.width * 0.5,
-//             child: Consumer(builder: (context, ref, child) {
-//               final state = ref.watch(playerMatchingNotifierProvider);
+//             child: Consumer(
+//               builder: (context, ref, child) {
+//                 final state = ref.watch(playerMatchingNotifierProvider);
 
-//               return state.when(
-//                 () => Column(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     const Text(
-//                       'Game Mode',
-//                       style: TextStyle(
-//                         fontSize: 30,
-//                         // fontWeight: FontWeight.bold,
-//                         color: Palette.crimson,
+//                 return state.when(
+//                   () => Column(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: [
+//                       const Text(
+//                         'Game Mode',
+//                         style: TextStyle(
+//                           fontSize: 30,
+//                           // fontWeight: FontWeight.bold,
+//                           color: Palette.crimson,
+//                         ),
 //                       ),
-//                     ),
-//                     const SizedBox(height: 24),
-//                     MultiplayerButton(
-//                       myInfo: userData,
-//                       list: numberList,
-//                     ),
-//                     const SizedBox(height: 16),
-//                     const SoloButton(),
-//                     const SizedBox(height: 30),
-//                   ],
-//                 ),
-//                 processing: () => Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     CircularProgressIndicator(
-//                       valueColor: AlwaysStoppedAnimation<Color>(Palette.violet),
-//                     ),
-//                     SizedBox(width: 16),
-//                     Text(
-//                       'Finding player ...',
-//                       style: TextStyle(
-//                         fontSize: 24,
+//                       const SizedBox(height: 24),
+//                       MultiplayerButton(
+//                         myInfo: userData,
+//                         list: numberList,
 //                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 isMatched: (id) => Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: const [
-//                     Icon(
-//                       Icons.check_circle,
-//                       color: Palette.violet,
-//                       size: 50,
-//                     ),
-//                     SizedBox(width: 16),
-//                     Text(
-//                       'Found player',
-//                       style: TextStyle(
-//                         fontSize: 24,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 isQueued: () => PlayerQueuedWidget(
-//                   myInfo: userData,
-//                 ),
-//                 error: (message) => Text(
-//                   message.toString(),
-//                   style: const TextStyle(
-//                     fontSize: 24,
+//                       const SizedBox(height: 16),
+//                       const SoloButton(),
+//                       const SizedBox(height: 30),
+//                     ],
 //                   ),
-//                 ),
-//               );
-//             }),
+//                   processing: () => Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: const [
+//                       CircularProgressIndicator(
+//                         valueColor:
+//                             AlwaysStoppedAnimation<Color>(Palette.violet),
+//                       ),
+//                       SizedBox(width: 16),
+//                       Text(
+//                         'Finding player ...',
+//                         style: TextStyle(
+//                           fontSize: 24,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   isMatched: (id) => Row(
+//                     mainAxisAlignment: MainAxisAlignment.center,
+//                     children: const [
+//                       Icon(
+//                         Icons.check_circle,
+//                         color: Palette.violet,
+//                         size: 50,
+//                       ),
+//                       SizedBox(width: 16),
+//                       Text(
+//                         'Found player',
+//                         style: TextStyle(
+//                           fontSize: 24,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                   isQueued: () => PlayerQueuedWidget(
+//                     myInfo: userData,
+//                   ),
+//                   error: (message) => Text(
+//                     message.toString(),
+//                     style: const TextStyle(
+//                       fontSize: 24,
+//                     ),
+//                   ),
+//                 );
+//               },
+//             ),
 //           ),
 //         ));
 //   }

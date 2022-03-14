@@ -55,9 +55,9 @@ class MyApp extends StatelessWidget {
           onSurface: Colors.white38,
         ),
       ),
-      home: const AccountScreen(),
+      // home: const AccountScreen(),
       // home: const TimerTestScreen(),
-      // home: const PuzzleStarterScreen(),
+      home: const PuzzleStarterScreen(),
     );
   }
 }

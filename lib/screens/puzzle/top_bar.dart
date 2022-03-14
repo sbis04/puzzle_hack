@@ -6,8 +6,8 @@ import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 
-class TopBarLarge extends ConsumerWidget {
-  const TopBarLarge({
+class TopBar extends ConsumerWidget {
+  const TopBar({
     required String puzzleType,
     required Color color,
     required int puzzleSize,
@@ -135,9 +135,14 @@ class TopBarLarge extends ConsumerWidget {
               onPressed: _puzzleType == 'Multiplayer'
                   ? null
                   : () {
+                      // ref.read(puzzleTypeNotifierProvider.notifier).dispose();
+                      
                       ref
                           .read(puzzleTypeNotifierProvider.notifier)
                           .changeToMultiplayer();
+                      ref
+                          .read(emailAuthNotificationProvider.notifier)
+                          .checkForSignedUser();
                     },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

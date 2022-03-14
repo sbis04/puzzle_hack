@@ -18,6 +18,18 @@ class DatabaseClient {
         .catchError((error) => log("Failed to add user: $error"));
   }
 
+  Future<EUserData?> retrieveUser({required String uid}) async {
+    final usersCollection =
+        firestore.collection(Strings.usersCollectionName).doc(uid);
+    final user = await usersCollection.get();
+    final userData = user.data();
+    if (userData != null) {
+      return EUserData.fromJson(userData);
+    }
+
+    return null;
+  }
+
   Future<void> addPlayerToQueue({required EUserData userInfo}) async {
     final queueCollection =
         firestore.collection(Strings.queueCollectionName).doc(userInfo.uid);
@@ -37,8 +49,8 @@ class DatabaseClient {
 
   Future removeQueuedUser({required EUserData myInfo}) async {}
 
-  Future<UserData?> findEarliestUser({required EUserData myInfo}) async {
-    UserData? earliestUser;
+  Future<EUserData?> findEarliestUser({required EUserData myInfo}) async {
+    EUserData? earliestUser;
     final queueCollection = firestore.collection(Strings.queueCollectionName);
 
     QuerySnapshot queueSnapshot = await queueCollection
@@ -61,7 +73,7 @@ class DatabaseClient {
       queueDocs.first.data();
 
       earliestUser =
-          UserData.fromJson(queueDocs.first.data() as Map<String, dynamic>);
+          EUserData.fromJson(queueDocs.first.data() as Map<String, dynamic>);
     }
 
     return earliestUser;
@@ -154,7 +166,7 @@ class DatabaseClient {
 
   Future<void> updateGameState({
     required String id,
-    required UserData mydata,
+    required EUserData mydata,
     required List<int> numberList,
     required int moves,
   }) async {
@@ -190,5 +202,21 @@ class DatabaseClient {
           .catchError((error) => log(
               "Failed to update ${Strings.otherlistFieldName} field: $error"));
     }
+  }
+
+  Future<List<int>?> retrievePuzzle({required String id}) async {
+    final matchedCollection =
+        firestore.collection(Strings.matchedCollectionName).doc(id);
+    final doc = await matchedCollection.get();
+    final data = doc.data();
+
+    if (data != null) {
+      var list = data['mylist'];
+      List<int> intPuzzle = List<int>.from(list);
+
+      return intPuzzle;
+    }
+
+    return null;
   }
 }

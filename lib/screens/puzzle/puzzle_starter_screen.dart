@@ -76,33 +76,5 @@ class _SoloScreenState extends ConsumerState<PuzzleStarterScreen> {
                   riveController: _riveController,
                 ),
     );
-
-    // switch (currentPuzzleType) {
-    //   case PuzzleType.normal:
-    //     return SoloScreen(
-    //       solverClient: _solverClient,
-    //       initialPuzzleData: _initialPuzzleData,
-    //       puzzleSize: _puzzleSize,
-    //       puzzleType: name,
-    //       riveController: _riveController,
-    //     );
-    //   case PuzzleType.photo:
-    //     return PhotoScreen(
-    //       solverClient: _solverClient,
-    //       initialPuzzleData: _initialPuzzleData,
-    //       puzzleSize: _puzzleSize,
-    //       puzzleType: name,
-    //       riveController: _riveController,
-    //     );
-    //   case PuzzleType.multiplayer:
-    //   default:
-    //     return MultiplayerScreen(
-    //       solverClient: _solverClient,
-    //       initialPuzzleData: _initialPuzzleData,
-    //       puzzleSize: _puzzleSize,
-    //       puzzleType: name,
-    //       riveController: _riveController,
-    //     );
-    // }
   }
 }

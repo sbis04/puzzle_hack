@@ -26,12 +26,13 @@ class ResponsiveLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final smallestWidth = MediaQuery.of(context).size.width;
     log('width: $smallestWidth');
-    if (smallestWidth >= largeBreakPoint) {
-      return largeChild;
-    } else if (smallestWidth >= mediumBreakPoint) {
-      return mediumChild ?? largeChild;
-    } else {
-      return smallChild ?? mediumChild ?? largeChild;
-    }
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      child: smallestWidth >= largeBreakPoint
+          ? largeChild
+          : smallestWidth >= mediumBreakPoint
+              ? mediumChild ?? largeChild
+              : smallChild ?? mediumChild ?? largeChild,
+    );
   }
 }
