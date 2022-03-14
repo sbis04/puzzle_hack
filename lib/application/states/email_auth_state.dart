@@ -8,7 +8,7 @@ part 'email_auth_state.freezed.dart';
 class EmailAuthState with _$EmailAuthState {
   const factory EmailAuthState() = EmailAuthIdle;
   const factory EmailAuthState.processing() = EmailAuthProcessing;
-  const factory EmailAuthState.done(User user) = EmailAuthDone;
+  const factory EmailAuthState.done(EUserData user) = EmailAuthDone;
   const factory EmailAuthState.storingInfo() = UserStorageProcessing;
   const factory EmailAuthState.storageDone(EUserData userData) = UserStorageDone;
   const factory EmailAuthState.error({String? message}) = EmailAuthError;

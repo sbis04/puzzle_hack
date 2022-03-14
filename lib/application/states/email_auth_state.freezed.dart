@@ -26,7 +26,7 @@ class _$EmailAuthStateTearOff {
     return const EmailAuthProcessing();
   }
 
-  EmailAuthDone done(User user) {
+  EmailAuthDone done(EUserData user) {
     return EmailAuthDone(
       user,
     );
@@ -58,7 +58,7 @@ mixin _$EmailAuthState {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -68,7 +68,7 @@ mixin _$EmailAuthState {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -78,7 +78,7 @@ mixin _$EmailAuthState {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -178,7 +178,7 @@ class _$EmailAuthIdle implements EmailAuthIdle {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -191,7 +191,7 @@ class _$EmailAuthIdle implements EmailAuthIdle {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -204,7 +204,7 @@ class _$EmailAuthIdle implements EmailAuthIdle {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -307,7 +307,7 @@ class _$EmailAuthProcessing implements EmailAuthProcessing {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -320,7 +320,7 @@ class _$EmailAuthProcessing implements EmailAuthProcessing {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -333,7 +333,7 @@ class _$EmailAuthProcessing implements EmailAuthProcessing {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -398,7 +398,7 @@ abstract class $EmailAuthDoneCopyWith<$Res> {
   factory $EmailAuthDoneCopyWith(
           EmailAuthDone value, $Res Function(EmailAuthDone) then) =
       _$EmailAuthDoneCopyWithImpl<$Res>;
-  $Res call({User user});
+  $Res call({EUserData user});
 }
 
 /// @nodoc
@@ -420,7 +420,7 @@ class _$EmailAuthDoneCopyWithImpl<$Res>
       user == freezed
           ? _value.user
           : user // ignore: cast_nullable_to_non_nullable
-              as User,
+              as EUserData,
     ));
   }
 }
@@ -431,7 +431,7 @@ class _$EmailAuthDone implements EmailAuthDone {
   const _$EmailAuthDone(this.user);
 
   @override
-  final User user;
+  final EUserData user;
 
   @override
   String toString() {
@@ -460,7 +460,7 @@ class _$EmailAuthDone implements EmailAuthDone {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -473,7 +473,7 @@ class _$EmailAuthDone implements EmailAuthDone {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -486,7 +486,7 @@ class _$EmailAuthDone implements EmailAuthDone {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -543,9 +543,9 @@ class _$EmailAuthDone implements EmailAuthDone {
 }
 
 abstract class EmailAuthDone implements EmailAuthState {
-  const factory EmailAuthDone(User user) = _$EmailAuthDone;
+  const factory EmailAuthDone(EUserData user) = _$EmailAuthDone;
 
-  User get user;
+  EUserData get user;
   @JsonKey(ignore: true)
   $EmailAuthDoneCopyWith<EmailAuthDone> get copyWith =>
       throw _privateConstructorUsedError;
@@ -594,7 +594,7 @@ class _$UserStorageProcessing implements UserStorageProcessing {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -607,7 +607,7 @@ class _$UserStorageProcessing implements UserStorageProcessing {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -620,7 +620,7 @@ class _$UserStorageProcessing implements UserStorageProcessing {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -747,7 +747,7 @@ class _$UserStorageDone implements UserStorageDone {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -760,7 +760,7 @@ class _$UserStorageDone implements UserStorageDone {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -773,7 +773,7 @@ class _$UserStorageDone implements UserStorageDone {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -905,7 +905,7 @@ class _$EmailAuthError implements EmailAuthError {
   TResult when<TResult extends Object?>(
     TResult Function() $default, {
     required TResult Function() processing,
-    required TResult Function(User user) done,
+    required TResult Function(EUserData user) done,
     required TResult Function() storingInfo,
     required TResult Function(EUserData userData) storageDone,
     required TResult Function(String? message) error,
@@ -918,7 +918,7 @@ class _$EmailAuthError implements EmailAuthError {
   TResult? whenOrNull<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
@@ -931,7 +931,7 @@ class _$EmailAuthError implements EmailAuthError {
   TResult maybeWhen<TResult extends Object?>(
     TResult Function()? $default, {
     TResult Function()? processing,
-    TResult Function(User user)? done,
+    TResult Function(EUserData user)? done,
     TResult Function()? storingInfo,
     TResult Function(EUserData userData)? storageDone,
     TResult Function(String? message)? error,
