@@ -8,7 +8,8 @@ import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
-import 'screens/login_screen.dart';
+import 'screens/login_screen_name.dart';
+import 'screens/multiplayer/login_screen.dart';
 
 void main() async {
   // To remove the hash in web
@@ -38,10 +39,23 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'GoogleSans',
         backgroundColor: Palette.blue.darken(0.3),
+        colorScheme: ColorScheme(
+          brightness: Theme.of(context).brightness,
+          primary: Palette.blue,
+          onPrimary: Colors.white,
+          secondary: Palette.blue.withOpacity(0.6),
+          onSecondary: Palette.blue.withOpacity(0.3),
+          error: Theme.of(context).colorScheme.error,
+          onError: Theme.of(context).colorScheme.onError,
+          background: Palette.blue.darken(0.3),
+          onBackground: Colors.white,
+          surface: Palette.crimson,
+          onSurface: Theme.of(context).colorScheme.onSurface,
+        ),
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
       // home: const TimerTestScreen(),
-      // home: const PuzzleStarterScreen(),
+      home: const PuzzleStarterScreen(),
     );
   }
 }
