@@ -9,7 +9,7 @@ class AddUserDatabaseNotifier extends StateNotifier<AddUserDatabaseState> {
   AddUserDatabaseNotifier(this._databaseClient)
       : super(const AddUserDatabaseState());
 
-  triggerAddUser({required UserData user}) async {
+  triggerAddUser({required EUserData user}) async {
     state = const AddUserDatabaseState.processing();
 
     try {

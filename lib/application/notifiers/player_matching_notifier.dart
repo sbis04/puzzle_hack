@@ -9,13 +9,13 @@ class PlayerMatchingNotifier extends StateNotifier<PlayerMatchingState> {
   PlayerMatchingNotifier(this._databaseClient)
       : super(const PlayerMatchingState());
 
-  foundUser({required UserData myInfo}) async {
+  foundUser({required EUserData myInfo}) async {
     String id = await _databaseClient.foundMatch(myInfo: myInfo);
     state = PlayerMatchingState.isMatched(id);
   }
 
   triggerMatching({
-    required UserData myInfo,
+    required EUserData myInfo,
     required List<int> numbers,
   }) async {
     state = const PlayerMatchingState.processing();
