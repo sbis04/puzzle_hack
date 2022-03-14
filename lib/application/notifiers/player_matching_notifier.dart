@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/player_matching_state.dart';
 import 'package:my_flutter_puzzle/models/user_info.dart';
@@ -21,8 +23,10 @@ class PlayerMatchingNotifier extends StateNotifier<PlayerMatchingState> {
     state = const PlayerMatchingState.processing();
 
     try {
+      log('enter');
       String? id =
           await _databaseClient.matchPlayers(myInfo: myInfo, numbers: numbers);
+      log('id: $id');
 
       if (id != null) {
         state = PlayerMatchingState.isMatched(id);

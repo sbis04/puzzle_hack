@@ -11,6 +11,24 @@ class EmailAuthNotifier extends StateNotifier<EmailAuthState> {
   EmailAuthNotifier(this._authentication, this._databaseClient)
       : super(const EmailAuthState());
 
+  checkForSignedUser() async {
+    state = const EmailAuthState.processing();
+
+    try {
+      final user = _authentication.getCurrentUser();
+      if (user != null) {
+        final userData = await _databaseClient.retrieveUser(uid: user.uid);
+        if (userData != null) {
+          state = EmailAuthState.done(userData);
+        }
+      } else {
+        state = const EmailAuthState();
+      }
+    } catch (e) {
+      state = EmailAuthState.error(message: e.toString());
+    }
+  }
+
   signIn({required String email, required String password}) async {
     state = const EmailAuthState.processing();
 
@@ -20,14 +38,11 @@ class EmailAuthNotifier extends StateNotifier<EmailAuthState> {
         password: password,
       );
       if (user != null) {
-        state = EmailAuthState.done(user);
+        final userData = await _databaseClient.retrieveUser(uid: user.uid);
+        if (userData != null) {
+          state = EmailAuthState.done(userData);
+        }
       }
-      //  else {
-      //   state = const EmailAuthState.error(
-      //     message:
-      //         'You don\'t have any account associated with this email, please register first.',
-      //   );
-      // }
     } catch (e) {
       state = EmailAuthState.error(message: e.toString());
     }
@@ -56,7 +71,7 @@ class EmailAuthNotifier extends StateNotifier<EmailAuthState> {
         );
         await _databaseClient.addUser(userInfo: userInfo);
         state = EmailAuthState.storageDone(userInfo);
-        state = EmailAuthState.done(user);
+        state = EmailAuthState.done(userInfo);
       }
     } catch (e) {
       state = EmailAuthState.error(message: e.toString());
