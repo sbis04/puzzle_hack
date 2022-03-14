@@ -24,3 +24,30 @@ class UserData {
         'timestamp': timestamp,
       };
 }
+
+class EUserData {
+  final String uid;
+  final String username;
+  final String email;
+  final int timestamp;
+
+  EUserData({
+    required this.uid,
+    required this.username,
+    required this.email,
+    required this.timestamp,
+  });
+
+  EUserData.fromJson(Map<String, dynamic> json)
+      : uid = json['uid'],
+        username = json['username'],
+        email = json['email'],
+        timestamp = json['timestamp'];
+
+  Map<String, dynamic> toJson() => {
+        'uid': uid,
+        'username': username,
+        'email': email,
+        'timestamp': timestamp,
+      };
+}
