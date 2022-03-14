@@ -8,6 +8,7 @@ import 'package:my_flutter_puzzle/utils/color_brightness.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'firebase_options.dart';
+import 'screens/login_screen.dart';
 
 void main() async {
   // To remove the hash in web
@@ -38,9 +39,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'GoogleSans',
         backgroundColor: Palette.blue.darken(0.3),
       ),
-      // home: const LoginScreen(),
+      home: const LoginScreen(),
       // home: const TimerTestScreen(),
-      home: const PuzzleStarterScreen(),
+      // home: const PuzzleStarterScreen(),
     );
   }
 }

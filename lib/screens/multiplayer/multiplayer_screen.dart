@@ -3,16 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen_large.dart';
+import 'package:my_flutter_puzzle/screens/solo/solo_screen_medium.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen_small.dart';
 import 'package:my_flutter_puzzle/utils/puzzle_solver.dart';
 import 'package:my_flutter_puzzle/utils/responsive_layout.dart';
 import 'package:rive/rive.dart';
 
 import '../../models/puzzle_data.dart';
-import 'solo_screen_medium.dart';
 
-class SoloScreen extends ConsumerWidget {
-  const SoloScreen({
+class MultiplayerScreen extends ConsumerWidget {
+  const MultiplayerScreen({
     required this.solverClient,
     required this.initialPuzzleData,
     required this.puzzleSize,
