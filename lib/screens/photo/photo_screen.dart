@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/image_splitter_state.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
+import 'package:my_flutter_puzzle/dialog_test.dart';
 import 'package:my_flutter_puzzle/models/puzzle_data.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
@@ -59,6 +60,10 @@ class _PhotoScreenState extends ConsumerState<PhotoScreen> {
         (previous, PuzzleState next) {
       if (next is PuzzleSolved) {
         ref.read(timerNotifierProvider.notifier).stopTimer();
+        showDialog(
+          context: context,
+          builder: (_) => const CongratsDialog(),
+        );
       }
     });
 

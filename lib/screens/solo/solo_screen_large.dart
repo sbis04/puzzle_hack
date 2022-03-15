@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
+import 'package:my_flutter_puzzle/dialog_test.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/res/puzzle_constants.dart';
 import 'package:my_flutter_puzzle/screens/puzzle/top_bar.dart';
@@ -56,9 +57,6 @@ class _SoloScreenLargeState extends ConsumerState<SoloScreenLarge> {
   Widget build(BuildContext context) {
     ref.listen(puzzleNotifierProvider(_solverClient),
         (previous, PuzzleState next) {
-      if (next is PuzzleSolved) {
-        // TODO: Add celebration
-      }
       if (next is PuzzleInitializing) {
         setState(() {
           _isStartPressed = true;

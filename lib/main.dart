@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_flutter_puzzle/dialog_test.dart';
 import 'package:my_flutter_puzzle/res/palette.dart';
 import 'package:my_flutter_puzzle/screens/multiplayer/account/account_screen.dart';
 import 'package:my_flutter_puzzle/screens/multiplayer/account/account_screen_large.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const AccountScreen(),
       // home: const TimerTestScreen(),
+      // home: DialogTest(),
       home: const PuzzleStarterScreen(),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
+import 'package:my_flutter_puzzle/dialog_test.dart';
 import 'package:my_flutter_puzzle/providers.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen_large.dart';
 import 'package:my_flutter_puzzle/screens/solo/solo_screen_small.dart';
@@ -33,6 +34,10 @@ class SoloScreen extends ConsumerWidget {
         (previous, PuzzleState next) {
       if (next is PuzzleSolved) {
         ref.read(timerNotifierProvider.notifier).stopTimer();
+        showDialog(
+          context: context,
+          builder: (_) => const CongratsDialog(),
+        );
       }
     });
 

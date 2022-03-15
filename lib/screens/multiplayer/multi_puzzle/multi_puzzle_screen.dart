@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_flutter_puzzle/application/states/player_matching_state.dart';
+import 'package:my_flutter_puzzle/application/states/puzzle_state.dart';
+import 'package:my_flutter_puzzle/dialog_test.dart';
 import 'package:my_flutter_puzzle/models/puzzle_data.dart';
 import 'package:my_flutter_puzzle/models/user_info.dart';
 import 'package:my_flutter_puzzle/providers.dart';
@@ -42,6 +44,17 @@ class MultiPuzzleScreen extends ConsumerWidget {
             .read(multiPuzzleNotifierProvider(solverClient).notifier)
             .setSelectedPuzzle(id: next.id);
         ref.read(timerNotifierProvider.notifier).startTimer();
+      }
+    });
+
+    ref.listen(puzzleNotifierProvider(solverClient),
+        (previous, PuzzleState next) {
+      if (next is PuzzleSolved) {
+        ref.read(timerNotifierProvider.notifier).stopTimer();
+        showDialog(
+          context: context,
+          builder: (_) => const CongratsDialog(),
+        );
       }
     });
 
